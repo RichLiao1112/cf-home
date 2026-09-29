@@ -75,7 +75,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
 
       {/* 质感图标底座 */}
       <div className="shrink-0 relative">
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
+        <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
           card.cover && !imgError
             ? 'bg-slate-950/70 border-white/10'
             : `bg-gradient-to-br ${getGradientFromTitle(card.title)}`
@@ -89,7 +89,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               loading="lazy"
             />
           ) : (
-            <span className="text-lg font-bold font-mono tracking-wider">
+            <span className="text-base font-bold font-mono tracking-wider">
               {getInitial(card.title)}
             </span>
           )}
@@ -163,14 +163,14 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               e.stopPropagation();
               window.open(card.lanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition-all ${
+            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
               isLan
                 ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
                 : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`内网直达: ${card.lanLink}`}
           >
-            <Wifi className="w-3 h-3 text-emerald-400" />
+            <Wifi className="w-2.5 h-2.5 text-emerald-400" />
             <span>LAN</span>
           </button>
         )}
@@ -183,14 +183,14 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               e.stopPropagation();
               window.open(card.wanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition-all ${
+            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
               !isLan && !card.lanLink
                 ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/25'
                 : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`外网直达: ${card.wanLink}`}
           >
-            <Globe className="w-3 h-3 text-cyan-400" />
+            <Globe className="w-2.5 h-2.5 text-cyan-400" />
             <span>WAN</span>
           </button>
         )}

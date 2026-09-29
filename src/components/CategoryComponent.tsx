@@ -27,16 +27,16 @@ export const CategoryComponent: React.FC<Props> = ({
 }) => {
   const accentColor = category.color || '#38BDF8';
 
-  // 动态列样式映射 (1 - 8 列)
+  // 动态列样式映射 (1 - 8 列，智能响应式分级)
   const getGridColsClass = (cols: number) => {
     switch (cols) {
       case 1: return 'grid-cols-1';
       case 2: return 'grid-cols-1 md:grid-cols-2';
-      case 3: return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-      case 5: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5';
-      case 6: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6';
-      case 7: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7';
-      case 8: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8';
+      case 3: return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+      case 5: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+      case 6: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6';
+      case 7: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7';
+      case 8: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8';
       case 4:
       default:
         return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
