@@ -102,7 +102,7 @@ export const CardModal: React.FC<Props> = ({
         className="fixed inset-0"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-lg rounded-3xl bg-slate-900 border border-white/15 p-6 shadow-2xl backdrop-blur-2xl z-10 space-y-4">
+      <div className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-white/15 p-6 shadow-2xl backdrop-blur-2xl z-10 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <h3 className="text-base font-bold text-slate-100">
             {initialCard ? '编辑卡片' : '添加新卡片'}
@@ -110,7 +110,7 @@ export const CardModal: React.FC<Props> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/10"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/10"
           >
             <X className="w-5 h-5" />
           </button>
@@ -123,7 +123,7 @@ export const CardModal: React.FC<Props> = ({
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+              className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
             >
               {categories.map((c) => (
                 <option key={c.id} value={c.id} className="bg-slate-900 text-slate-100">
@@ -157,7 +157,7 @@ export const CardModal: React.FC<Props> = ({
                 value={wanLink}
                 onChange={(e) => setWanLink(e.target.value)}
                 placeholder="https://example.com"
-                className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
               />
             </div>
 
@@ -168,7 +168,7 @@ export const CardModal: React.FC<Props> = ({
                 value={lanLink}
                 onChange={(e) => setLanLink(e.target.value)}
                 placeholder="http://192.168.1.100:8080"
-                className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
               />
             </div>
           </div>
@@ -182,7 +182,7 @@ export const CardModal: React.FC<Props> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="例如：Jellyfin 媒体库"
-              className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+              className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
             />
           </div>
 
@@ -194,7 +194,7 @@ export const CardModal: React.FC<Props> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="例如：个人高清影院"
-              className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+              className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
             />
           </div>
 
@@ -207,10 +207,10 @@ export const CardModal: React.FC<Props> = ({
                 value={cover}
                 onChange={(e) => setCover(e.target.value)}
                 placeholder="https://.../favicon.png"
-                className="flex-1 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
+                className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-100 focus:outline-none focus:border-cyan-400"
               />
               {cover && (
-                <div className="w-9 h-9 rounded-xl overflow-hidden bg-slate-800 border border-white/15 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-lg overflow-hidden bg-slate-800 border border-white/15 flex items-center justify-center shrink-0">
                   <img src={cover} alt="Preview" className="w-full h-full object-contain p-1" />
                 </div>
               )}
@@ -236,13 +236,13 @@ export const CardModal: React.FC<Props> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-slate-300 hover:bg-white/10 rounded-xl transition"
+              className="px-4 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition"
             >
               取消
             </button>
             <button
               type="submit"
-              className="px-5 py-2 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-xl shadow-md transition"
+              className="px-5 py-2 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-lg shadow-md transition"
             >
               保存卡片
             </button>

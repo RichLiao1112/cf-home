@@ -95,7 +95,7 @@ export const SearchModal: React.FC<Props> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-100">
       <div className="fixed inset-0" onClick={onClose} />
-      <div className="relative w-full max-w-2xl rounded-3xl bg-slate-900/95 border border-white/15 shadow-2xl backdrop-blur-2xl z-10 overflow-hidden flex flex-col max-h-[75vh]">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-slate-900/95 border border-white/15 shadow-2xl backdrop-blur-2xl z-10 overflow-hidden flex flex-col max-h-[75vh]">
         {/* 顶部搜索框 */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10">
           <Search className="w-5 h-5 text-cyan-400 shrink-0" />
@@ -111,7 +111,7 @@ export const SearchModal: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="p-1 rounded-lg text-slate-400 hover:text-slate-200"
+              className="p-1 rounded-md text-slate-400 hover:text-slate-200"
             >
               <X className="w-4 h-4" />
             </button>
@@ -138,14 +138,14 @@ export const SearchModal: React.FC<Props> = ({
                     onClose();
                   }
                 }}
-                className={`flex items-center justify-between gap-3 p-3 rounded-2xl cursor-pointer transition-all ${
+                className={`flex items-center justify-between gap-3 p-3 rounded-xl cursor-pointer transition-all ${
                   isSelected
                     ? 'bg-cyan-500/20 border border-cyan-400/40 text-slate-100'
                     : 'hover:bg-white/5 border border-transparent text-slate-300'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-xl overflow-hidden bg-slate-800 border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-lg overflow-hidden bg-slate-800 border border-white/10 flex items-center justify-center shrink-0">
                     {card.cover ? (
                       <img src={card.cover} alt="" className="w-full h-full object-contain p-1" />
                     ) : (

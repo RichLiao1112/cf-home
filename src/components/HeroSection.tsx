@@ -79,7 +79,7 @@ export const HeroSection: React.FC<Props> = ({
         {/* 客户端网络感知徽标 */}
         <div className="flex items-center gap-2">
           <div
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm border transition-all ${
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all ${
               isApple
                 ? 'bg-white/10 border-white/15 text-white/90'
                 : 'bg-slate-900/60 border-white/[0.08] text-slate-300'
@@ -115,12 +115,12 @@ export const HeroSection: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 居中搜索胶囊条 (Raycast / Spotlight 风格) */}
+      {/* 居中搜索条 (Raycast / Spotlight 风格) */}
       <div className="max-w-2xl mx-auto mb-8">
         <button
           type="button"
           onClick={onOpenSearch}
-          className={`w-full group flex items-center justify-between px-4 py-3 rounded-2xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border ${
+          className={`w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border ${
             isApple
               ? 'bg-white/[0.07] hover:bg-white/[0.12] border-white/15 hover:border-white/30 text-white/90 shadow-black/20'
               : 'bg-slate-900/60 hover:bg-slate-800/80 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/20'
@@ -150,7 +150,7 @@ export const HeroSection: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onSelectCategory(null)}
-            className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+            className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeCategory === null
                 ? isApple
                   ? 'bg-white text-zinc-950 font-semibold shadow-md'
@@ -167,7 +167,7 @@ export const HeroSection: React.FC<Props> = ({
               key={cat.id}
               type="button"
               onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeCategory === cat.id
                   ? isApple
                     ? 'bg-white text-zinc-950 font-semibold shadow-md'

@@ -69,7 +69,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, theme = '
       ref={setNodeRef}
       style={style}
       onClick={handleClick}
-      className={`group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 ${
+      className={`group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 ${
         isApple
           ? 'bg-white/[0.05] hover:bg-white/[0.10] border border-white/10 hover:border-white/20 backdrop-blur-2xl shadow-sm hover:shadow-black/25'
           : 'bg-slate-900/50 hover:bg-slate-800/70 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5'
@@ -87,7 +87,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, theme = '
 
       {/* 质感图标底座 */}
       <div className="shrink-0 relative">
-        <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
+        <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
           card.cover && !imgError
             ? 'bg-slate-950/70 border-white/10'
             : `bg-gradient-to-br ${getGradientFromTitle(card.title)}`
@@ -96,7 +96,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, theme = '
             <img
               src={card.cover}
               alt={card.title}
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-full object-contain rounded-md"
               onError={() => setImgError(true)}
               loading="lazy"
             />

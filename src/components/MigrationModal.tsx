@@ -79,7 +79,7 @@ export const MigrationModal: React.FC<Props> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="fixed inset-0" onClick={onClose} />
-      <div className="relative w-full max-w-lg rounded-3xl bg-slate-900 border border-white/15 p-6 shadow-2xl backdrop-blur-2xl z-10 space-y-4">
+      <div className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-white/15 p-6 shadow-2xl backdrop-blur-2xl z-10 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <div className="flex items-center gap-2 text-slate-100 font-bold">
             <Download className="w-5 h-5 text-cyan-400" />
@@ -88,14 +88,14 @@ export const MigrationModal: React.FC<Props> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/10"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/10"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* 导出区域 */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
+        <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs">
           <div className="font-semibold text-slate-200">导出数据</div>
           <p className="text-slate-400">
             一键下载当前所有空间、分类与卡片配置为完整的 `home.json` 文件。
@@ -104,7 +104,7 @@ export const MigrationModal: React.FC<Props> = ({
             type="button"
             onClick={handleExport}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-white bg-cyan-600 hover:bg-cyan-500 rounded-xl transition shadow-md"
+            className="inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-white bg-cyan-600 hover:bg-cyan-500 rounded-lg transition shadow-md"
           >
             <Download className="w-4 h-4" />
             <span>导出 home.json</span>
@@ -112,7 +112,7 @@ export const MigrationModal: React.FC<Props> = ({
         </div>
 
         {/* 导入区域 */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3 text-xs">
+        <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3 text-xs">
           <div className="font-semibold text-slate-200">从已有项目导入</div>
           <p className="text-slate-400">
             可直接上传或粘贴原有 NAS / Docker 项目中的 `home.json`，无缝继承所有已有卡片。
@@ -122,7 +122,7 @@ export const MigrationModal: React.FC<Props> = ({
             type="file"
             accept=".json"
             onChange={handleFileSelect}
-            className="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-slate-200 hover:file:bg-white/20 cursor-pointer"
+            className="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-slate-200 hover:file:bg-white/20 cursor-pointer"
           />
 
           <textarea
@@ -130,7 +130,7 @@ export const MigrationModal: React.FC<Props> = ({
             value={jsonText}
             onChange={(e) => setJsonText(e.target.value)}
             placeholder="或在此处直接粘贴 JSON 数据..."
-            className="w-full p-2.5 rounded-xl bg-slate-950/60 border border-white/10 text-slate-200 font-mono text-[11px] focus:outline-none focus:border-cyan-400"
+            className="w-full p-2.5 rounded-lg bg-slate-950/60 border border-white/10 text-slate-200 font-mono text-[11px] focus:outline-none focus:border-cyan-400"
           />
 
           {successMsg && (
@@ -144,7 +144,7 @@ export const MigrationModal: React.FC<Props> = ({
             type="button"
             onClick={handleImport}
             disabled={loading || !jsonText.trim()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition shadow-md disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition shadow-md disabled:opacity-50"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
             <span>一键导入生效</span>
