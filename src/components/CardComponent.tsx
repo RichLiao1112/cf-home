@@ -75,11 +75,11 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, theme = '
           : 'bg-slate-900/50 hover:bg-slate-800/70 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5'
       }`}
     >
-      {/* 拖拽手柄 (桌面端鼠标悬浮显示，移动端隐藏避免抢占上下滑动手势) */}
+      {/* 拖拽手柄 (常驻展示) */}
       <div
         {...attributes}
         {...listeners}
-        className="hidden sm:block opacity-0 group-hover:opacity-40 hover:!opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 -ml-1 shrink-0"
+        className="flex items-center justify-center opacity-40 hover:!opacity-100 group-hover:opacity-75 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-200 -ml-1 shrink-0 touch-none"
         title="拖动排序"
       >
         <GripVertical className="w-3.5 h-3.5" />
