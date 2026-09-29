@@ -1,6 +1,6 @@
 import React from 'react';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
-import { Plus, Edit3, Trash2 } from 'lucide-react';
+import { Plus, Edit3, Trash2, Folder } from 'lucide-react';
 import { Category, Card, NetworkContext } from '../types';
 import { CardComponent } from './CardComponent';
 
@@ -25,7 +25,7 @@ export const CategoryComponent: React.FC<Props> = ({
   onEditCard,
   onDeleteCard,
 }) => {
-  const accentColor = category.color || '#3B82F6';
+  const accentColor = category.color || '#38BDF8';
 
   // 动态列样式映射 (1 - 8 列)
   const getGridColsClass = (cols: number) => {
@@ -44,38 +44,43 @@ export const CategoryComponent: React.FC<Props> = ({
   };
 
   return (
-    <section className="mb-10 group/category">
+    <section id={`cat-${category.id}`} className="mb-10 group/category scroll-mt-24">
       {/* 分类标题栏 */}
-      <div className="flex items-center justify-between mb-3.5 px-1">
-        <div className="flex items-center gap-2.5">
-          {/* 色彩标识指示条 */}
-          <span
-            className="w-1.5 h-4.5 rounded-full shadow-sm"
-            style={{ backgroundColor: accentColor }}
+      <div className="flex items-center justify-between mb-4 px-1">
+        <div className="flex items-center gap-3">
+          {/* 色彩立体光标 */}
+          <div
+            className="w-2.5 h-6 rounded-md shadow-sm"
+            style={{
+              backgroundColor: accentColor,
+              boxShadow: `0 0 12px ${accentColor}66`,
+            }}
           />
-          <h3 className="text-base font-semibold text-slate-100 tracking-wide flex items-center gap-2">
-            <span>{category.title}</span>
-            <span className="text-xs font-normal text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-2">
+            <h3 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight">
+              {category.title}
+            </h3>
+            <span className="text-xs font-medium text-slate-400 bg-white/5 border border-white/[0.08] px-2 py-0.5 rounded-full font-mono">
               {category.cards.length}
             </span>
-          </h3>
+          </div>
         </div>
 
-        {/* 分类操作按钮 */}
-        <div className="flex items-center gap-1 opacity-80 group-hover/category:opacity-100 transition-opacity">
+        {/* 分类操作按钮组 */}
+        <div className="flex items-center gap-1.5 opacity-90 group-hover/category:opacity-100 transition-opacity">
           <button
             type="button"
             onClick={() => onAddCard(category.id)}
-            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-200 bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 hover:border-cyan-400/30 rounded-lg transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-900/60 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 hover:border-cyan-400/40 rounded-xl transition-all shadow-sm"
             title="添加新卡片"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>添加卡片</span>
+            <span>添加</span>
           </button>
           <button
             type="button"
             onClick={() => onEditCategory(category)}
-            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-white/10 rounded-lg transition"
+            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-white/10 rounded-xl transition"
             title="编辑分类"
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -83,7 +88,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onDeleteCategory(category.id)}
-            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition"
             title="删除分类"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -91,9 +96,9 @@ export const CategoryComponent: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 卡片栅格区与拖拽容器 */}
+      {/* 卡片栅格区 */}
       <SortableContext items={category.cards.map((c) => c.id)} strategy={rectSortingStrategy}>
-        <div className={`grid gap-3 ${getGridColsClass(desktopColumns)}`}>
+        <div className={`grid gap-3.5 ${getGridColsClass(desktopColumns)}`}>
           {category.cards.map((card) => (
             <CardComponent
               key={card.id}
@@ -107,10 +112,12 @@ export const CategoryComponent: React.FC<Props> = ({
           {category.cards.length === 0 && (
             <div
               onClick={() => onAddCard(category.id)}
-              className="col-span-full border-2 border-dashed border-white/10 hover:border-cyan-400/40 rounded-2xl p-6 text-center text-slate-400 hover:text-slate-200 hover:bg-white/[0.02] cursor-pointer transition flex flex-col items-center justify-center gap-2"
+              className="col-span-full border-2 border-dashed border-white/10 hover:border-cyan-400/40 rounded-2xl p-8 text-center text-slate-400 hover:text-slate-200 hover:bg-white/[0.02] cursor-pointer transition flex flex-col items-center justify-center gap-2.5 group"
             >
-              <Plus className="w-5 h-5 text-slate-500" />
-              <p className="text-xs">该分类下暂无卡片，点击即可添加</p>
+              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-cyan-300 group-hover:scale-110 transition-all">
+                <Plus className="w-5 h-5" />
+              </div>
+              <p className="text-xs font-medium">该分类暂无卡片，点击即可添加新服务</p>
             </div>
           )}
         </div>

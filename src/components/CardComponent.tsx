@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ExternalLink, Edit2, Trash2, Globe, Wifi, GripVertical } from 'lucide-react';
@@ -16,17 +16,20 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     id: card.id,
   });
 
+  const [imgError, setImgError] = useState(false);
+
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.3 : 1,
+    opacity: isDragging ? 0.35 : 1,
+    zIndex: isDragging ? 50 : undefined,
   };
 
-  // 智能首选链接：内网环境下优先使用 LAN 链接，否则使用 WAN 链接
-  const primaryLink = networkContext.networkType === 'lan' && card.lanLink ? card.lanLink : (card.wanLink || card.lanLink || '#');
+  // 智能首选链接
+  const isLan = networkContext.networkType === 'lan';
+  const primaryLink = isLan && card.lanLink ? card.lanLink : (card.wanLink || card.lanLink || '#');
 
   const handleClick = (e: React.MouseEvent) => {
-    // 如果点击的是编辑或删除等小按钮，不触发整体跳转
     if ((e.target as HTMLElement).closest('button')) return;
     if (primaryLink && primaryLink !== '#') {
       window.open(primaryLink, card.openInNewWindow ? '_blank' : '_self');
@@ -37,65 +40,97 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     return str?.trim() ? str.trim().charAt(0).toUpperCase() : '?';
   };
 
+  // 根据标题生成柔和的渐变色托盘
+  const getGradientFromTitle = (title: string) => {
+    const gradients = [
+      'from-cyan-500/20 to-blue-500/20 text-cyan-300 border-cyan-500/30',
+      'from-indigo-500/20 to-purple-500/20 text-indigo-300 border-indigo-500/30',
+      'from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30',
+      'from-violet-500/20 to-fuchsia-500/20 text-violet-300 border-violet-500/30',
+      'from-amber-500/20 to-orange-500/20 text-amber-300 border-amber-500/30',
+    ];
+    let hash = 0;
+    for (let i = 0; i < title.length; i++) {
+      hash = title.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return gradients[Math.abs(hash) % gradients.length];
+  };
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       onClick={handleClick}
-      className="group relative flex items-center justify-between gap-3 p-3.5 rounded-2xl border border-white/10 hover:border-cyan-400/40 bg-white/[var(--card-opacity,0.05)] hover:bg-white/[var(--card-hover-opacity,0.12)] backdrop-blur-md transition-all duration-200 cursor-pointer shadow-sm hover:shadow-cyan-500/10 hover:-translate-y-0.5 select-none"
+      className="group relative flex items-center justify-between gap-3.5 p-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-white/[0.07] hover:border-cyan-400/40 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-cyan-500/10 hover:-translate-y-0.5 select-none"
     >
       {/* 拖拽手柄 */}
       <div
         {...attributes}
         {...listeners}
-        className="opacity-0 group-hover:opacity-60 hover:!opacity-100 transition cursor-grab active:cursor-grabbing text-slate-400 -ml-1.5"
+        className="opacity-0 group-hover:opacity-40 hover:!opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 -ml-1"
         title="拖动排序"
       >
-        <GripVertical className="w-4 h-4" />
+        <GripVertical className="w-3.5 h-3.5" />
       </div>
 
-      {/* 图标 */}
-      <div className="shrink-0 flex items-center justify-center w-11 h-11 rounded-xl overflow-hidden bg-slate-800/80 border border-white/10 shadow-inner">
-        {card.cover ? (
-          <img
-            src={card.cover}
-            alt={card.title}
-            className="w-full h-full object-contain p-1 rounded-lg"
-            onError={(e) => {
-              // 图片加载失败时回退为首字母展示
-              (e.target as HTMLElement).style.display = 'none';
-              e.currentTarget.parentElement?.classList.add('bg-cyan-600/30');
-            }}
-          />
-        ) : (
+      {/* 质感图标底座 */}
+      <div className="shrink-0 relative">
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
+          card.cover && !imgError
+            ? 'bg-slate-950/70 border-white/10'
+            : `bg-gradient-to-br ${getGradientFromTitle(card.title)}`
+        }`}>
+          {card.cover && !imgError ? (
+            <img
+              src={card.cover}
+              alt={card.title}
+              className="w-full h-full object-contain rounded-lg"
+              onError={() => setImgError(true)}
+              loading="lazy"
+            />
+          ) : (
+            <span className="text-lg font-bold font-mono tracking-wider">
+              {getInitial(card.title)}
+            </span>
+          )}
+        </div>
+
+        {/* 局域网活动微光指示点 */}
+        {card.lanLink && (
           <span
-            className="text-base font-bold text-slate-200"
-            style={{ color: card.coverColor || '#38BDF8' }}
-          >
-            {getInitial(card.title)}
-          </span>
+            className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${
+              isLan ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50' : 'bg-slate-500'
+            }`}
+            title={isLan ? 'LAN 局域网可用' : '局域网链接已配置'}
+          />
         )}
       </div>
 
-      {/* 标题与描述 */}
+      {/* 标题、描述与状态 */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <h4 className="text-sm font-medium text-slate-100 truncate group-hover:text-cyan-300 transition-colors">
+          <h4 className="text-sm font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors truncate">
             {card.title}
           </h4>
           {card.openInNewWindow && (
-            <ExternalLink className="w-3 h-3 text-slate-500 shrink-0 opacity-0 group-hover:opacity-70 transition-opacity" />
+            <ExternalLink className="w-3 h-3 text-slate-500 shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" />
           )}
         </div>
-        {card.description && (
-          <p className="text-xs text-slate-400 truncate mt-0.5">{card.description}</p>
+        {card.description ? (
+          <p className="text-xs text-slate-400 truncate mt-0.5 font-normal">
+            {card.description}
+          </p>
+        ) : (
+          <p className="text-[11px] text-slate-500 truncate mt-0.5 font-mono">
+            {primaryLink.replace(/^https?:\/\//, '').split('/')[0]}
+          </p>
         )}
       </div>
 
-      {/* 快捷操作与网络直达按钮 */}
+      {/* 操作按钮区 */}
       <div className="shrink-0 flex items-center gap-1">
-        {/* 编辑 / 删除按钮 (悬浮时浮现) */}
-        <div className="hidden group-hover:flex items-center gap-0.5 mr-1">
+        {/* 编辑 / 删除按钮 (Hover 时浮现) */}
+        <div className="hidden group-hover:flex items-center gap-0.5 mr-1 animate-in fade-in duration-100">
           <button
             type="button"
             onClick={(e) => {
@@ -120,7 +155,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
           </button>
         </div>
 
-        {/* LAN 内网直达按钮 */}
+        {/* LAN 内网直达微胶囊 */}
         {card.lanLink && (
           <button
             type="button"
@@ -128,19 +163,19 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               e.stopPropagation();
               window.open(card.lanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition ${
-              networkContext.networkType === 'lan'
-                ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40 hover:bg-emerald-500/30'
-                : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10'
+            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition-all ${
+              isLan
+                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
+                : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`内网直达: ${card.lanLink}`}
           >
-            <Wifi className="w-3 h-3" />
+            <Wifi className="w-3 h-3 text-emerald-400" />
             <span>LAN</span>
           </button>
         )}
 
-        {/* WAN 外网直达按钮 */}
+        {/* WAN 外网直达微胶囊 */}
         {card.wanLink && (
           <button
             type="button"
@@ -148,14 +183,14 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               e.stopPropagation();
               window.open(card.wanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition ${
-              networkContext.networkType === 'wan' && !card.lanLink
-                ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/40 hover:bg-cyan-500/30'
-                : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10'
+            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition-all ${
+              !isLan && !card.lanLink
+                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/25'
+                : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`外网直达: ${card.wanLink}`}
           >
-            <Globe className="w-3 h-3" />
+            <Globe className="w-3 h-3 text-cyan-400" />
             <span>WAN</span>
           </button>
         )}

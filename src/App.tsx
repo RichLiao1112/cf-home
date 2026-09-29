@@ -29,6 +29,7 @@ import {
 } from './utils/api';
 
 import { Navbar } from './components/Navbar';
+import { HeroSection } from './components/HeroSection';
 import { CategoryComponent } from './components/CategoryComponent';
 import { CardModal } from './components/CardModal';
 import { CategoryModal } from './components/CategoryModal';
@@ -42,6 +43,7 @@ export const App: React.FC = () => {
   const [currentKey, setCurrentKey] = useState<string>('168');
   const [configKeys, setConfigKeys] = useState<string[]>(['168']);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [networkContext, setNetworkContext] = useState<NetworkContext>({
     clientIP: '127.0.0.1',
     isPrivate: true,
@@ -381,12 +383,25 @@ export const App: React.FC = () => {
     );
   }
 
+  const totalCards = useMemo(() => {
+    return profileData?.categories.reduce((acc, cat) => acc + cat.cards.length, 0) || 0;
+  }, [profileData]);
+
+  const displayedCategories = useMemo(() => {
+    if (!profileData?.categories) return [];
+    if (!activeCategory) return profileData.categories;
+    return profileData.categories.filter((c) => c.id === activeCategory);
+  }, [profileData, activeCategory]);
+
   return (
     <div
       style={styleVariables}
-      className="min-h-screen bg-slate-950 text-slate-100 relative selection:bg-cyan-500/30 font-sans"
+      className="min-h-screen bg-[#030712] text-slate-100 relative selection:bg-cyan-500/30 font-sans"
     >
-      {/* 背景图片与全屏模糊层 */}
+      {/* 细腻极光网格环境光晕底板 */}
+      <div className="fixed inset-0 z-0 bg-mesh-glow pointer-events-none opacity-80" />
+
+      {/* 自定义背景壁纸层 */}
       {head?.backgroundImage && (
         <div
           className="fixed inset-0 z-0 bg-cover bg-center bg-fixed transition-all duration-700"
@@ -398,7 +413,7 @@ export const App: React.FC = () => {
       <div
         className="fixed inset-0 z-0 pointer-events-none transition-all duration-300"
         style={{
-          backgroundColor: `rgba(2, 6, 23, ${overlayOpacity / 100})`,
+          backgroundColor: `rgba(3, 7, 18, ${overlayOpacity / 100})`,
           backdropFilter: `blur(${head?.backgroundBlur ?? 0}px)`,
         }}
       />
@@ -425,13 +440,22 @@ export const App: React.FC = () => {
           }}
         />
 
-        <main className="flex-1 max-w-[1720px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="flex-1 max-w-[1720px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <HeroSection
+            networkContext={networkContext}
+            categories={profileData?.categories || []}
+            totalCards={totalCards}
+            onOpenSearch={() => setIsSearchOpen(true)}
+            activeCategory={activeCategory}
+            onSelectCategory={(id) => setActiveCategory(id)}
+          />
+
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
           >
-            {profileData?.categories.map((category) => (
+            {displayedCategories.map((category) => (
               <CategoryComponent
                 key={category.id}
                 category={category}
