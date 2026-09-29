@@ -77,10 +77,12 @@ export const Navbar: React.FC<Props> = ({
 
   return (
     <header
-      className={`sticky top-0 z-30 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-30 w-full transition-all duration-300 border-none ${
         isScrolled
-          ? 'bg-slate-950/75 backdrop-blur-2xl border-b border-white/[0.08] shadow-lg shadow-black/20'
-          : 'bg-gradient-to-b from-black/40 via-black/10 to-transparent border-b border-transparent backdrop-blur-none'
+          ? theme === 'apple'
+            ? 'bg-black/40 backdrop-blur-2xl'
+            : 'bg-slate-950/70 backdrop-blur-2xl'
+          : 'bg-transparent backdrop-blur-none'
       }`}
     >
       <div className="max-w-[1720px] mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
