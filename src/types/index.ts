@@ -86,5 +86,3 @@ export interface AuthSession {
   isZeroTrust: boolean;
 }
 
-export type ThemePreset = 'linear' | 'apple';
-

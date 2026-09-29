@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { NetworkContext, Category, ThemePreset } from '../types';
+import { NetworkContext, Category } from '../types';
 
 interface Props {
   networkContext: NetworkContext;
   categories: Category[];
   totalCards: number;
-  theme?: ThemePreset;
   onOpenSearch: () => void;
   activeCategory: string | null;
   onSelectCategory: (id: string | null) => void;
@@ -16,7 +15,6 @@ export const HeroSection: React.FC<Props> = ({
   networkContext,
   categories,
   totalCards,
-  theme = 'linear',
   onOpenSearch,
   activeCategory,
   onSelectCategory,
@@ -42,21 +40,13 @@ export const HeroSection: React.FC<Props> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const isApple = theme === 'apple';
-
   return (
     <div className="relative pt-6 pb-4">
       {/* 顶部状态与问候 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span
-              className={`text-xl sm:text-2xl font-bold tracking-tight ${
-                isApple
-                  ? 'text-white'
-                  : 'bg-gradient-to-r from-slate-100 via-slate-200 to-slate-400 bg-clip-text text-transparent'
-              }`}
-            >
+            <span className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-slate-100 via-slate-200 to-slate-400 bg-clip-text text-transparent">
               {greeting}
             </span>
             <span className="text-sm font-medium text-slate-400 font-mono">
@@ -65,11 +55,11 @@ export const HeroSection: React.FC<Props> = ({
           </div>
           <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
             <span>已收录</span>
-            <span className={`font-semibold font-mono ${isApple ? 'text-white' : 'text-sky-300'}`}>
+            <span className="font-semibold font-mono text-sky-300">
               {categories.length}
             </span>
             <span>个分类 ·</span>
-            <span className={`font-semibold font-mono ${isApple ? 'text-white' : 'text-sky-300'}`}>
+            <span className="font-semibold font-mono text-sky-300">
               {totalCards}
             </span>
             <span>个家庭服务与站点</span>
@@ -78,30 +68,16 @@ export const HeroSection: React.FC<Props> = ({
 
         {/* 客户端网络感知徽标 */}
         <div className="flex items-center gap-2">
-          <div
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all ${
-              isApple
-                ? 'bg-white/10 border-white/15 text-white/90'
-                : 'bg-slate-900/60 border-white/[0.08] text-slate-300'
-            }`}
-          >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all bg-slate-900/60 border-white/[0.08] text-slate-300">
             <span className="relative flex h-2 w-2">
               <span
                 className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  networkContext.networkType === 'lan'
-                    ? 'bg-emerald-400'
-                    : isApple
-                    ? 'bg-white'
-                    : 'bg-sky-400'
+                  networkContext.networkType === 'lan' ? 'bg-emerald-400' : 'bg-sky-400'
                 }`}
               />
               <span
                 className={`relative inline-flex rounded-full h-2 w-2 ${
-                  networkContext.networkType === 'lan'
-                    ? 'bg-emerald-500'
-                    : isApple
-                    ? 'bg-white'
-                    : 'bg-sky-500'
+                  networkContext.networkType === 'lan' ? 'bg-emerald-500' : 'bg-sky-500'
                 }`}
               />
             </span>
@@ -120,20 +96,12 @@ export const HeroSection: React.FC<Props> = ({
         <button
           type="button"
           onClick={onOpenSearch}
-          className={`w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border ${
-            isApple
-              ? 'bg-white/[0.07] hover:bg-white/[0.12] border-white/15 hover:border-white/30 text-white/90 shadow-black/20'
-              : 'bg-slate-900/60 hover:bg-slate-800/80 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/20'
-          }`}
+          className="w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border bg-slate-900/60 hover:bg-slate-800/80 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/20"
         >
           <div className="flex items-center gap-3">
-            <Search
-              className={`w-4 h-4 transition-transform group-hover:scale-110 ${
-                isApple ? 'text-white/70 group-hover:text-white' : 'text-sky-300'
-              }`}
-            />
+            <Search className="w-4 h-4 transition-transform group-hover:scale-110 text-sky-300" />
             <span className="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition-colors">
-              搜索服务名称、拼音缩写 (如 <code className={`font-mono ${isApple ? 'text-white' : 'text-sky-300'}`}>jf</code>)、内网地址...
+              搜索服务名称、拼音缩写 (如 <code className="font-mono text-sky-300">jf</code>)、内网地址...
             </span>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 shrink-0">
@@ -152,11 +120,7 @@ export const HeroSection: React.FC<Props> = ({
             onClick={() => onSelectCategory(null)}
             className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeCategory === null
-                ? isApple
-                  ? 'bg-white text-zinc-950 font-semibold shadow-md'
-                  : 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
-                : isApple
-                ? 'bg-white/[0.08] text-white/70 hover:text-white hover:bg-white/15 border border-white/10'
+                ? 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
                 : 'bg-slate-900/40 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
             }`}
           >
@@ -169,17 +133,13 @@ export const HeroSection: React.FC<Props> = ({
               onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
               className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeCategory === cat.id
-                  ? isApple
-                    ? 'bg-white text-zinc-950 font-semibold shadow-md'
-                    : 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
-                  : isApple
-                  ? 'bg-white/[0.08] text-white/70 hover:text-white hover:bg-white/15 border border-white/10'
+                  ? 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
                   : 'bg-slate-900/40 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
               }`}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: cat.color || (isApple ? '#ffffff' : '#38BDF8') }}
+                style={{ backgroundColor: cat.color || '#38BDF8' }}
               />
               <span>{cat.title}</span>
               <span className="text-[10px] opacity-60">({cat.cards.length})</span>

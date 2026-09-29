@@ -1,14 +1,13 @@
 import React from 'react';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Plus, Edit3, Trash2, Folder } from 'lucide-react';
-import { Category, Card, NetworkContext, ThemePreset } from '../types';
+import { Category, Card, NetworkContext } from '../types';
 import { CardComponent } from './CardComponent';
 
 interface Props {
   category: Category;
   desktopColumns: number;
   networkContext: NetworkContext;
-  theme?: ThemePreset;
   onAddCard: (categoryId: string) => void;
   onEditCategory: (category: Category) => void;
   onDeleteCategory: (categoryId: string) => void;
@@ -20,7 +19,6 @@ export const CategoryComponent: React.FC<Props> = ({
   category,
   desktopColumns,
   networkContext,
-  theme = 'linear',
   onAddCard,
   onEditCategory,
   onDeleteCategory,
@@ -106,7 +104,6 @@ export const CategoryComponent: React.FC<Props> = ({
               key={card.id}
               card={card}
               networkContext={networkContext}
-              theme={theme}
               onEdit={onEditCard}
               onDelete={onDeleteCard}
             />

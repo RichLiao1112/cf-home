@@ -18,7 +18,6 @@ import {
   NetworkContext,
   AuthSession,
   HeadLayout,
-  ThemePreset,
 } from './types';
 import {
   fetchProfile,
@@ -58,23 +57,6 @@ export const App: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  // 主题预设状态：linear (Linear 石墨极客) 或 apple (Apple Pro 纯白毛玻璃)
-  const [theme, setTheme] = useState<ThemePreset>(() => {
-    try {
-      const urlParam = new URLSearchParams(window.location.search).get('theme') as ThemePreset | null;
-      if (urlParam === 'linear' || urlParam === 'apple') {
-        return urlParam;
-      }
-    } catch {
-      // fallback
-    }
-    return (localStorage.getItem('cf_home_theme') as ThemePreset) || 'linear';
-  });
-
-  const handleThemeChange = (newTheme: ThemePreset) => {
-    setTheme(newTheme);
-    localStorage.setItem('cf_home_theme', newTheme);
-  };
 
   // 模态窗口状态
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -424,12 +406,8 @@ export const App: React.FC = () => {
       style={styleVariables}
       className="min-h-screen bg-[#030712] text-slate-100 relative selection:bg-cyan-500/30 font-sans"
     >
-      {/* 细腻环境光晕底板（根据主题自适应低饱和冷夜或纯净毛玻璃） */}
-      <div
-        className={`fixed inset-0 z-0 pointer-events-none opacity-80 ${
-          theme === 'apple' ? 'bg-mesh-apple' : 'bg-mesh-linear'
-        }`}
-      />
+      {/* 细腻环境光晕底板（低饱和冷夜科技风） */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-80 bg-mesh-linear" />
 
       {/* 自定义背景壁纸层 */}
       {head?.backgroundImage && (
@@ -457,8 +435,6 @@ export const App: React.FC = () => {
           configKeys={configKeys}
           networkContext={networkContext}
           authSession={authSession}
-          theme={theme}
-          onThemeChange={handleThemeChange}
           onSwitchKey={handleSwitchKey}
           onCreateKey={handleCreateKey}
           onDeleteKey={handleDeleteKey}
@@ -478,7 +454,6 @@ export const App: React.FC = () => {
             networkContext={networkContext}
             categories={profileData?.categories || []}
             totalCards={totalCards}
-            theme={theme}
             onOpenSearch={() => setIsSearchOpen(true)}
             activeCategory={activeCategory}
             onSelectCategory={(id) => setActiveCategory(id)}
@@ -495,7 +470,6 @@ export const App: React.FC = () => {
                 category={category}
                 desktopColumns={head?.desktopColumns || 4}
                 networkContext={networkContext}
-                theme={theme}
                 onAddCard={handleOpenAddCard}
                 onEditCategory={(c) => {
                   setEditingCategory(c);
