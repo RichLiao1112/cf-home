@@ -85,3 +85,6 @@ export interface AuthSession {
   userEmail?: string;
   isZeroTrust: boolean;
 }
+
+export type ThemePreset = 'linear' | 'apple';
+

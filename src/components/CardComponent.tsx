@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ExternalLink, Edit2, Trash2, Globe, Wifi, GripVertical } from 'lucide-react';
-import { Card, NetworkContext } from '../types';
+import { Card, NetworkContext, ThemePreset } from '../types';
 
 interface Props {
   card: Card;
   networkContext: NetworkContext;
+  theme?: ThemePreset;
   onEdit: (card: Card) => void;
   onDelete: (cardId: string) => void;
 }
 
-export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, onDelete }) => {
+export const CardComponent: React.FC<Props> = ({ card, networkContext, theme = 'linear', onEdit, onDelete }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card.id,
   });
@@ -40,14 +41,19 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     return str?.trim() ? str.trim().charAt(0).toUpperCase() : '?';
   };
 
-  // 根据标题生成柔和的渐变色托盘
+  // 根据主题与标题生成优雅底座色彩
   const getGradientFromTitle = (title: string) => {
+    if (theme === 'apple') {
+      return 'from-white/10 to-white/5 text-white border-white/15';
+    }
+
+    // Linear 莫兰迪哑光科技冷调
     const gradients = [
-      'from-cyan-500/20 to-blue-500/20 text-cyan-300 border-cyan-500/30',
-      'from-indigo-500/20 to-purple-500/20 text-indigo-300 border-indigo-500/30',
-      'from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30',
-      'from-violet-500/20 to-fuchsia-500/20 text-violet-300 border-violet-500/30',
-      'from-amber-500/20 to-orange-500/20 text-amber-300 border-amber-500/30',
+      'from-slate-800/80 to-slate-900/90 text-slate-200 border-white/10',
+      'from-indigo-950/60 to-slate-900/80 text-indigo-300 border-indigo-500/20',
+      'from-emerald-950/60 to-slate-900/80 text-emerald-300 border-emerald-500/20',
+      'from-sky-950/60 to-slate-900/80 text-sky-300 border-sky-500/20',
+      'from-amber-950/60 to-slate-900/80 text-amber-300 border-amber-500/20',
     ];
     let hash = 0;
     for (let i = 0; i < title.length; i++) {
@@ -56,12 +62,18 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     return gradients[Math.abs(hash) % gradients.length];
   };
 
+  const isApple = theme === 'apple';
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       onClick={handleClick}
-      className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-white/[0.07] hover:border-cyan-400/40 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-cyan-500/10 hover:-translate-y-0.5 select-none touch-manipulation"
+      className={`group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 ${
+        isApple
+          ? 'bg-white/[0.05] hover:bg-white/[0.10] border border-white/10 hover:border-white/20 backdrop-blur-2xl shadow-sm hover:shadow-black/25'
+          : 'bg-slate-900/50 hover:bg-slate-800/70 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5'
+      }`}
     >
       {/* 拖拽手柄 (桌面端鼠标悬浮显示，移动端隐藏避免抢占上下滑动手势) */}
       <div
@@ -109,7 +121,9 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
       {/* 标题、描述与状态 */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <h4 className="text-sm font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors truncate">
+          <h4 className={`text-sm font-semibold transition-colors truncate ${
+            isApple ? 'text-white group-hover:text-white' : 'text-slate-100 group-hover:text-sky-300'
+          }`}>
             {card.title}
           </h4>
           {card.openInNewWindow && (
@@ -137,7 +151,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               e.stopPropagation();
               onEdit(card);
             }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-white/10 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-sky-300 hover:bg-white/10 transition"
             title="编辑卡片"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -164,13 +178,16 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               window.open(card.lanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
             className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
-              isLan
+              isApple
+                ? 'bg-white/10 hover:bg-white/20 text-white/90 border-white/15'
+                : isLan
                 ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
                 : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`内网直达: ${card.lanLink}`}
           >
-            <Wifi className="w-2.5 h-2.5 text-emerald-400" />
+            {isApple && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />}
+            {!isApple && <Wifi className="w-2.5 h-2.5 text-emerald-400" />}
             <span>LAN</span>
           </button>
         )}
@@ -184,13 +201,16 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
               window.open(card.wanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
             className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
-              !isLan && !card.lanLink
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/25'
+              isApple
+                ? 'bg-white/10 hover:bg-white/20 text-white/80 border-white/15'
+                : !isLan && !card.lanLink
+                ? 'bg-sky-500/15 text-sky-300 border-sky-500/30 hover:bg-sky-500/25'
                 : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
             }`}
             title={`外网直达: ${card.wanLink}`}
           >
-            <Globe className="w-2.5 h-2.5 text-cyan-400" />
+            {isApple && <span className="w-1.5 h-1.5 rounded-full bg-white/70 shrink-0" />}
+            {!isApple && <Globe className="w-2.5 h-2.5 text-sky-400" />}
             <span>WAN</span>
           </button>
         )}
