@@ -40,14 +40,14 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     return str?.trim() ? str.trim().charAt(0).toUpperCase() : '?';
   };
 
-  // 生成优雅底座色彩 (Linear 莫兰迪哑光科技冷调)
+  // 生成优雅底座色彩 (Linear 莫兰迪哑光科技冷调 - 调淡柔和)
   const getGradientFromTitle = (title: string) => {
     const gradients = [
-      'from-slate-800/80 to-slate-900/90 text-slate-200 border-white/10',
-      'from-indigo-950/60 to-slate-900/80 text-indigo-300 border-indigo-500/20',
-      'from-emerald-950/60 to-slate-900/80 text-emerald-300 border-emerald-500/20',
-      'from-sky-950/60 to-slate-900/80 text-sky-300 border-sky-500/20',
-      'from-amber-950/60 to-slate-900/80 text-amber-300 border-amber-500/20',
+      'from-slate-800/60 to-slate-900/70 text-slate-200 border-white/10',
+      'from-indigo-950/50 to-slate-900/65 text-indigo-300 border-indigo-500/20',
+      'from-emerald-950/50 to-slate-900/65 text-emerald-300 border-emerald-500/20',
+      'from-sky-950/50 to-slate-900/65 text-sky-300 border-sky-500/20',
+      'from-amber-950/50 to-slate-900/65 text-amber-300 border-amber-500/20',
     ];
     let hash = 0;
     for (let i = 0; i < title.length; i++) {
@@ -61,7 +61,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
       ref={setNodeRef}
       style={style}
       onClick={handleClick}
-      className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 bg-slate-900/50 hover:bg-slate-800/70 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5"
+      className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 bg-slate-900/30 hover:bg-slate-800/50 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5"
     >
       {/* 拖拽手柄 (常驻展示) */}
       <div
@@ -77,7 +77,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
       <div className="shrink-0 relative">
         <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
           card.cover && !imgError
-            ? 'bg-slate-950/70 border-white/10'
+            ? 'bg-slate-900/50 border-white/10'
             : `bg-gradient-to-br ${getGradientFromTitle(card.title)}`
         }`}>
           {card.cover && !imgError ? (

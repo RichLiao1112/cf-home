@@ -68,7 +68,7 @@ export const HeroSection: React.FC<Props> = ({
 
         {/* 客户端网络感知徽标 */}
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all bg-slate-900/60 border-white/[0.08] text-slate-300">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all bg-slate-900/40 border-white/[0.08] text-slate-300">
             <span className="relative flex h-2 w-2">
               <span
                 className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
@@ -96,7 +96,7 @@ export const HeroSection: React.FC<Props> = ({
         <button
           type="button"
           onClick={onOpenSearch}
-          className="w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border bg-slate-900/60 hover:bg-slate-800/80 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/20"
+          className="w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border bg-slate-900/35 hover:bg-slate-800/55 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/10"
         >
           <div className="flex items-center gap-3">
             <Search className="w-4 h-4 transition-transform group-hover:scale-110 text-sky-300" />
@@ -120,8 +120,8 @@ export const HeroSection: React.FC<Props> = ({
             onClick={() => onSelectCategory(null)}
             className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeCategory === null
-                ? 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
-                : 'bg-slate-900/40 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
+                ? 'bg-slate-800/80 text-sky-200 border border-sky-400/30 shadow-sm'
+                : 'bg-slate-900/25 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
             }`}
           >
             全部服务 ({totalCards})
@@ -133,8 +133,8 @@ export const HeroSection: React.FC<Props> = ({
               onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
               className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sm'
-                  : 'bg-slate-900/40 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
+                  ? 'bg-slate-800/80 text-sky-200 border border-sky-400/30 shadow-sm'
+                  : 'bg-slate-900/25 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
               }`}
             >
               <span

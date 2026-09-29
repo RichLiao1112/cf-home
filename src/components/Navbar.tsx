@@ -65,7 +65,7 @@ export const Navbar: React.FC<Props> = ({
     <header
       className={`sticky top-0 z-30 w-full transition-all duration-300 border-none ${
         isScrolled
-          ? 'bg-slate-950/70 backdrop-blur-2xl'
+          ? 'bg-slate-950/40 backdrop-blur-xl'
           : 'bg-transparent backdrop-blur-none'
       }`}
     >
@@ -102,7 +102,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-200 bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-white/20 rounded-lg transition shadow-sm"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-200 bg-white/[0.05] hover:bg-white/[0.10] border border-white/10 hover:border-white/20 rounded-lg transition shadow-sm"
             >
               <Layers className="w-3.5 h-3.5 text-sky-400" />
               <span>{currentKey}</span>
@@ -173,7 +173,7 @@ export const Navbar: React.FC<Props> = ({
         <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Zero Trust 身份认证微章 */}
           {authSession.isZeroTrust && (
-            <div className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs shadow-sm border mr-1 bg-slate-900/60 border-white/10 text-slate-300">
+            <div className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs shadow-sm border mr-1 bg-slate-900/40 border-white/10 text-slate-300">
               <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
               <span className="font-mono text-[11px] truncate max-w-[160px]">
                 {authSession.userEmail || 'Zero Trust'}
@@ -185,7 +185,7 @@ export const Navbar: React.FC<Props> = ({
           <button
             type="button"
             onClick={onOpenSearch}
-            className="p-1.5 sm:p-2 rounded-lg text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition flex items-center gap-1.5"
+            className="p-1.5 sm:p-2 rounded-lg text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition flex items-center gap-1.5"
             title="聚光灯拼音搜索 (Cmd+K)"
           >
             <Search className="w-4 h-4" />
@@ -196,7 +196,7 @@ export const Navbar: React.FC<Props> = ({
           <button
             type="button"
             onClick={onAddCategory}
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-medium text-xs shadow-md transition-all hover:scale-[1.02] bg-slate-800 text-sky-200 border border-sky-400/30 shadow-sky-950/20 hover:bg-slate-700/80"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-medium text-xs shadow-md transition-all hover:scale-[1.02] bg-slate-800/70 text-sky-200 border border-sky-400/30 shadow-sky-950/10 hover:bg-slate-700/70"
             title="添加新分类"
           >
             <Plus className="w-3.5 h-3.5" />
