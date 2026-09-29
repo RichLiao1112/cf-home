@@ -61,13 +61,13 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
       ref={setNodeRef}
       style={style}
       onClick={handleClick}
-      className="group relative flex items-center justify-between gap-3.5 p-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-white/[0.07] hover:border-cyan-400/40 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-cyan-500/10 hover:-translate-y-0.5 select-none"
+      className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-white/[0.07] hover:border-cyan-400/40 backdrop-blur-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-cyan-500/10 hover:-translate-y-0.5 select-none touch-manipulation"
     >
-      {/* 拖拽手柄 */}
+      {/* 拖拽手柄 (桌面端鼠标悬浮显示，移动端隐藏避免抢占上下滑动手势) */}
       <div
         {...attributes}
         {...listeners}
-        className="opacity-0 group-hover:opacity-40 hover:!opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 -ml-1"
+        className="hidden sm:block opacity-0 group-hover:opacity-40 hover:!opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 -ml-1 shrink-0"
         title="拖动排序"
       >
         <GripVertical className="w-3.5 h-3.5" />

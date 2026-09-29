@@ -204,7 +204,18 @@ app.get('/home', async (c) => {
   const store = await getStore(c.env?.HOME_KV);
   const keys = Object.keys(store);
 
-  const activeKey = reqKey && store[reqKey] ? reqKey : keys[0] || '168';
+  // 优先匹配请求指定的 key；若未指定则优先匹配 'default'，否则选择第一个可用 key
+  let activeKey = reqKey && store[reqKey] ? reqKey : '';
+  if (!activeKey) {
+    if (store['default']) {
+      activeKey = 'default';
+    } else if (keys.length > 0) {
+      activeKey = keys[0];
+    } else {
+      activeKey = 'default';
+    }
+  }
+
   if (!store[activeKey]) {
     store[activeKey] = defaultProfile();
     await saveStore(store, c.env?.HOME_KV);

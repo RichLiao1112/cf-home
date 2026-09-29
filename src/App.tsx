@@ -40,8 +40,10 @@ import { RecycleBinModal } from './components/RecycleBinModal';
 import { MigrationModal } from './components/MigrationModal';
 
 export const App: React.FC = () => {
-  const [currentKey, setCurrentKey] = useState<string>('168');
-  const [configKeys, setConfigKeys] = useState<string[]>(['168']);
+  const [currentKey, setCurrentKey] = useState<string>(() => {
+    return localStorage.getItem('cf_home_active_key') || 'default';
+  });
+  const [configKeys, setConfigKeys] = useState<string[]>(['default', '168']);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [networkContext, setNetworkContext] = useState<NetworkContext>({
@@ -71,18 +73,19 @@ export const App: React.FC = () => {
 
   // 拖拽传感器
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   // 载入数据
   const loadData = useCallback(async (key?: string) => {
     setLoading(true);
+    const targetKey = key || localStorage.getItem('cf_home_active_key') || undefined;
     try {
       const [session, net, res] = await Promise.all([
         fetchSession(),
         fetchNetworkContext(),
-        fetchProfile(key),
+        fetchProfile(targetKey),
       ]);
       setAuthSession(session);
       setNetworkContext(net);
@@ -91,7 +94,10 @@ export const App: React.FC = () => {
         setCurrentKey(res.key);
         setConfigKeys(res.keys);
         setProfileData(res.data);
+        localStorage.setItem('cf_home_active_key', res.key);
       }
+    } catch (err) {
+      console.error('Failed to load profile:', err);
     } finally {
       setLoading(false);
     }
@@ -122,6 +128,7 @@ export const App: React.FC = () => {
   // 空间切换与增删
   const handleSwitchKey = (key: string) => {
     if (key !== currentKey) {
+      localStorage.setItem('cf_home_active_key', key);
       loadData(key);
     }
   };
@@ -375,14 +382,6 @@ export const App: React.FC = () => {
     [navOpacityVal, cardOpacityVal, cardHoverOpacityVal]
   );
 
-  if (loading && !profileData) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-200">
-        <Loader2 className="w-10 h-10 animate-spin text-cyan-400" />
-      </div>
-    );
-  }
-
   const totalCards = useMemo(() => {
     return profileData?.categories.reduce((acc, cat) => acc + cat.cards.length, 0) || 0;
   }, [profileData]);
@@ -392,6 +391,14 @@ export const App: React.FC = () => {
     if (!activeCategory) return profileData.categories;
     return profileData.categories.filter((c) => c.id === activeCategory);
   }, [profileData, activeCategory]);
+
+  if (loading && !profileData) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-200">
+        <Loader2 className="w-10 h-10 animate-spin text-cyan-400" />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -404,7 +411,7 @@ export const App: React.FC = () => {
       {/* 自定义背景壁纸层 */}
       {head?.backgroundImage && (
         <div
-          className="fixed inset-0 z-0 bg-cover bg-center bg-fixed transition-all duration-700"
+          className="fixed inset-0 z-0 bg-cover bg-center transition-all duration-700 pointer-events-none"
           style={{ backgroundImage: `url(${head.backgroundImage})` }}
         />
       )}
@@ -414,7 +421,8 @@ export const App: React.FC = () => {
         className="fixed inset-0 z-0 pointer-events-none transition-all duration-300"
         style={{
           backgroundColor: `rgba(3, 7, 18, ${overlayOpacity / 100})`,
-          backdropFilter: `blur(${head?.backgroundBlur ?? 0}px)`,
+          WebkitBackdropFilter: head?.backgroundBlur ? `blur(${head.backgroundBlur}px)` : undefined,
+          backdropFilter: head?.backgroundBlur ? `blur(${head.backgroundBlur}px)` : undefined,
         }}
       />
 
