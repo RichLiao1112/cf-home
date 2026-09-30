@@ -128,25 +128,6 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
             </span>
           </div>
         )}
-
-        {/* 状态徽标小光点 (Sun-Panel 右上角网络感知角标) */}
-        {card.lanLink && (
-          <span
-            className="absolute top-1.5 right-1.5 flex h-2 w-2"
-            title={isLan ? '当前局域网可用 (LAN)' : '已配置局域网直连'}
-          >
-            {isLan && (
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            )}
-            <span className={`relative inline-flex rounded-full h-2 w-2 border border-black/40 ${isLan ? 'bg-emerald-400' : 'bg-emerald-600/70'}`} />
-          </span>
-        )}
-        {!card.lanLink && card.wanLink && (
-          <span
-            className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-sky-400/80 border border-black/40"
-            title="公网访问 (WAN)"
-          />
-        )}
       </div>
 
       {/* 图标下方单行居中文本 (Sun-Panel 经典 app-icon-text-shadow 阴影) */}
