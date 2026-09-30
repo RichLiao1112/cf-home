@@ -95,15 +95,13 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
         className="sun-panel-icon w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden flex items-center justify-center relative bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_32px_rgba(255,255,255,0.12)] transition-all duration-300 touch-none"
       >
         {card.cover && !imgError ? (
-          <div className="w-full h-full p-2.5 flex items-center justify-center">
-            <img
-              src={card.cover}
-              alt={card.title}
-              className="w-full h-full object-contain drop-shadow"
-              onError={() => setImgError(true)}
-              loading="lazy"
-            />
-          </div>
+          <img
+            src={card.cover}
+            alt={card.title}
+            className="w-full h-full object-cover rounded-2xl select-none"
+            onError={() => setImgError(true)}
+            loading="lazy"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-white/15 to-white/5">
             <span className="text-xl sm:text-2xl font-bold font-mono tracking-wider text-white text-shadow">
