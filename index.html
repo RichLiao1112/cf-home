@@ -5,11 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home - Personal Dashboard</title>
     <meta name="description" content="Cloudflare Native Personal Dashboard" />
-    <meta name="theme-color" content="#020617" />
+    <meta name="theme-color" content="#030712" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      #root-preload-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-color: #030712;
+        background-size: cover;
+        background-position: center;
+        pointer-events: none;
+      }
+    </style>
   </head>
-  <body class="bg-slate-950 text-slate-100">
-    <div id="root"></div>
+  <body class="bg-[#030712] text-slate-100 min-h-screen overflow-x-hidden selection:bg-cyan-500/30">
+    <div id="root-preload-bg"></div>
+    <script>
+      (function() {
+        try {
+          var bg = localStorage.getItem('cf_home_cached_bg');
+          if (bg) {
+            var el = document.getElementById('root-preload-bg');
+            if (el) el.style.backgroundImage = 'url(' + bg + ')';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <div id="root" class="relative z-10"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

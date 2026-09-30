@@ -195,7 +195,7 @@ export const SearchModal: React.FC<Props> = ({
         </div>
 
         {/* 底部快捷键提示 */}
-        <div className="px-4 py-2.5 bg-black/20 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
+        <div className="px-4 py-2.5 bg-white/[0.04] backdrop-blur-md border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
           <div className="flex items-center gap-3">
             <span>↑↓ 切换选中</span>
             <span>↵ 打开链接</span>

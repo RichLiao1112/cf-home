@@ -39,12 +39,30 @@ import { SnapshotModal } from './components/SnapshotModal';
 import { RecycleBinModal } from './components/RecycleBinModal';
 import { MigrationModal } from './components/MigrationModal';
 
+const cacheProfileData = (key: string, data: ProfileData) => {
+  try {
+    localStorage.setItem(`cf_home_profile_${key}`, JSON.stringify(data));
+    if (data?.layout?.head?.backgroundImage) {
+      localStorage.setItem('cf_home_cached_bg', data.layout.head.backgroundImage);
+    }
+  } catch (e) {
+    console.warn('Failed to cache profile data:', e);
+  }
+};
+
 export const App: React.FC = () => {
   const [currentKey, setCurrentKey] = useState<string>(() => {
     return localStorage.getItem('cf_home_active_key') || 'default';
   });
   const [configKeys, setConfigKeys] = useState<string[]>(['default', '168']);
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [profileData, setProfileData] = useState<ProfileData | null>(() => {
+    try {
+      const activeKey = localStorage.getItem('cf_home_active_key') || 'default';
+      const cached = localStorage.getItem(`cf_home_profile_${activeKey}`);
+      if (cached) return JSON.parse(cached);
+    } catch (e) {}
+    return null;
+  });
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [networkContext, setNetworkContext] = useState<NetworkContext>({
     clientIP: '127.0.0.1',
@@ -55,7 +73,7 @@ export const App: React.FC = () => {
     authenticated: true,
     isZeroTrust: false,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
   // 模态窗口状态
@@ -80,8 +98,10 @@ export const App: React.FC = () => {
 
   // 载入数据
   const loadData = useCallback(async (key?: string) => {
-    setLoading(true);
-    const targetKey = key || localStorage.getItem('cf_home_active_key') || undefined;
+    const targetKey = key || localStorage.getItem('cf_home_active_key') || 'default';
+    if (!profileData) {
+      setLoading(true);
+    }
     try {
       const [session, net, res] = await Promise.all([
         fetchSession(),
@@ -96,17 +116,18 @@ export const App: React.FC = () => {
         setConfigKeys(res.keys);
         setProfileData(res.data);
         localStorage.setItem('cf_home_active_key', res.key);
+        cacheProfileData(res.key, res.data);
       }
     } catch (err) {
       console.error('Failed to load profile:', err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [profileData]);
 
   useEffect(() => {
     loadData();
-  }, [loadData]);
+  }, []);
 
   // 快捷键 Cmd+K / Ctrl+K 搜索
   useEffect(() => {
@@ -123,6 +144,7 @@ export const App: React.FC = () => {
   // 保存数据
   const updateData = async (newData: ProfileData) => {
     setProfileData(newData);
+    cacheProfileData(currentKey, newData);
     await saveProfile(currentKey, newData);
   };
 
@@ -130,6 +152,16 @@ export const App: React.FC = () => {
   const handleSwitchKey = (key: string) => {
     if (key !== currentKey) {
       localStorage.setItem('cf_home_active_key', key);
+      try {
+        const cached = localStorage.getItem(`cf_home_profile_${key}`);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          setProfileData(parsed);
+          if (parsed?.layout?.head?.backgroundImage) {
+            localStorage.setItem('cf_home_cached_bg', parsed.layout.head.backgroundImage);
+          }
+        }
+      } catch (e) {}
       loadData(key);
     }
   };
@@ -395,8 +427,11 @@ export const App: React.FC = () => {
 
   if (loading && !profileData) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-200">
-        <Loader2 className="w-10 h-10 animate-spin text-cyan-400" />
+      <div className="flex min-h-screen items-center justify-center relative bg-mesh-linear text-slate-200">
+        <div className="glass-modal p-8 rounded-3xl flex flex-col items-center gap-4 shadow-2xl backdrop-blur-2xl">
+          <Loader2 className="w-9 h-9 animate-spin text-sky-400" />
+          <span className="text-sm font-medium text-white/80 tracking-wider">正在载入配置与壁纸...</span>
+        </div>
       </div>
     );
   }
