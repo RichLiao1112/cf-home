@@ -44,43 +44,40 @@ export const CategoryComponent: React.FC<Props> = ({
   };
 
   return (
-    <section id={`cat-${category.id}`} className="mb-10 group/category scroll-mt-24">
-      {/* 分类标题栏 */}
-      <div className="flex items-center justify-between mb-4 px-1">
-        <div className="flex items-center gap-3">
-          {/* 色彩立体光标 */}
-          <div
-            className="w-2.5 h-6 rounded-md shadow-sm"
+    <section id={`cat-${category.id}`} className="mb-12 group/category scroll-mt-24">
+      {/* Sun-Panel 经典分组标题栏 */}
+      <div className="flex items-center justify-between mb-4 px-2">
+        <div className="flex items-center gap-2.5">
+          <span
+            className="w-2 h-2 rounded-full shadow-sm"
             style={{
               backgroundColor: accentColor,
-              boxShadow: `0 0 12px ${accentColor}66`,
+              boxShadow: `0 0 10px ${accentColor}`,
             }}
           />
-          <div className="flex items-center gap-2">
-            <h3 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight">
-              {category.title}
-            </h3>
-            <span className="text-xs font-medium text-slate-400 bg-white/5 border border-white/[0.08] px-2 py-0.5 rounded-md font-mono">
-              {category.cards.length}
-            </span>
-          </div>
+          <h3 className="text-base sm:text-lg font-bold text-white tracking-wide text-shadow">
+            {category.title}
+          </h3>
+          <span className="text-[11px] font-semibold text-white/70 bg-black/30 border border-white/10 px-2 py-0.5 rounded-full font-mono text-shadow">
+            {category.cards.length}
+          </span>
         </div>
 
-        {/* 分类操作按钮组 */}
-        <div className="flex items-center gap-1.5 opacity-90 group-hover/category:opacity-100 transition-opacity">
+        {/* 分类操作按钮组 (悬浮平滑显现) */}
+        <div className="flex items-center gap-1 opacity-80 group-hover/category:opacity-100 transition-opacity">
           <button
             type="button"
             onClick={() => onAddCard(category.id)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-900/60 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 hover:border-cyan-400/40 rounded-lg transition-all shadow-sm"
-            title="添加新卡片"
+            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white/90 bg-black/40 hover:bg-black/60 hover:text-white border border-white/15 rounded-lg transition-all shadow-sm"
+            title="添加新应用"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>添加</span>
+            <span className="hidden sm:inline">添加</span>
           </button>
           <button
             type="button"
             onClick={() => onEditCategory(category)}
-            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-white/10 rounded-lg transition"
+            className="p-1.5 text-white/70 hover:text-white hover:bg-black/30 rounded-lg transition"
             title="编辑分类"
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -88,7 +85,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onDeleteCategory(category.id)}
-            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+            className="p-1.5 text-white/70 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
             title="删除分类"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -96,9 +93,9 @@ export const CategoryComponent: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 卡片栅格区 */}
+      {/* Sun-Panel 经典 APP 宫格网格区 (icon-small-box) */}
       <SortableContext items={category.cards.map((c) => c.id)} strategy={rectSortingStrategy}>
-        <div className={`grid gap-3.5 ${getGridColsClass(desktopColumns)}`}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(76px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(86px,1fr))] gap-y-6 gap-x-3 sm:gap-x-4 px-1">
           {category.cards.map((card) => (
             <CardComponent
               key={card.id}
@@ -112,12 +109,15 @@ export const CategoryComponent: React.FC<Props> = ({
           {category.cards.length === 0 && (
             <div
               onClick={() => onAddCard(category.id)}
-              className="col-span-full border-2 border-dashed border-white/10 hover:border-cyan-400/40 rounded-xl p-8 text-center text-slate-400 hover:text-slate-200 hover:bg-white/[0.02] cursor-pointer transition flex flex-col items-center justify-center gap-2.5 group"
+              className="flex flex-col items-center justify-center cursor-pointer group"
+              title="添加新服务"
             >
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-cyan-300 group-hover:scale-110 transition-all">
-                <Plus className="w-5 h-5" />
+              <div className="w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-2xl border-2 border-dashed border-white/20 group-hover:border-white/50 flex items-center justify-center text-white/50 group-hover:text-white group-hover:scale-105 transition-all bg-black/20 backdrop-blur-sm">
+                <Plus className="w-6 h-6" />
               </div>
-              <p className="text-xs font-medium">该分类暂无卡片，点击即可添加新服务</p>
+              <span className="text-xs text-white/60 group-hover:text-white mt-1.5 text-shadow">
+                添加
+              </span>
             </div>
           )}
         </div>

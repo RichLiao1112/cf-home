@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ExternalLink, Edit2, Trash2, Globe, Wifi, GripVertical } from 'lucide-react';
+import { Edit2, Trash2, ExternalLink, Wifi, Globe } from 'lucide-react';
 import { Card, NetworkContext } from '../types';
 
 interface Props {
@@ -40,14 +40,16 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     return str?.trim() ? str.trim().charAt(0).toUpperCase() : '?';
   };
 
-  // 生成优雅底座色彩 (Linear 莫兰迪哑光科技冷调 - 调淡柔和)
+  // Sun-Panel 标志性多彩 Squircle 渐变底座
   const getGradientFromTitle = (title: string) => {
     const gradients = [
-      'from-slate-800/60 to-slate-900/70 text-slate-200 border-white/10',
-      'from-indigo-950/50 to-slate-900/65 text-indigo-300 border-indigo-500/20',
-      'from-emerald-950/50 to-slate-900/65 text-emerald-300 border-emerald-500/20',
-      'from-sky-950/50 to-slate-900/65 text-sky-300 border-sky-500/20',
-      'from-amber-950/50 to-slate-900/65 text-amber-300 border-amber-500/20',
+      'from-blue-600 via-indigo-600 to-violet-700 shadow-indigo-500/25',
+      'from-emerald-500 via-teal-600 to-cyan-700 shadow-teal-500/25',
+      'from-amber-500 via-orange-600 to-red-600 shadow-orange-500/25',
+      'from-fuchsia-600 via-pink-600 to-rose-600 shadow-pink-500/25',
+      'from-sky-500 via-blue-600 to-indigo-700 shadow-blue-500/25',
+      'from-violet-600 via-purple-700 to-slate-800 shadow-purple-500/25',
+      'from-cyan-500 via-teal-600 to-emerald-700 shadow-cyan-500/25',
     ];
     let hash = 0;
     for (let i = 0; i < title.length; i++) {
@@ -60,141 +62,100 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
     <div
       ref={setNodeRef}
       style={style}
+      className="group relative flex flex-col items-center justify-start w-full cursor-pointer select-none transition-transform duration-200"
       onClick={handleClick}
-      className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl transition-all duration-200 cursor-pointer select-none touch-manipulation hover:-translate-y-0.5 bg-slate-900/30 hover:bg-slate-800/50 border border-white/[0.07] hover:border-sky-400/30 backdrop-blur-xl shadow-sm hover:shadow-sky-500/5"
+      title={card.description || card.title}
     >
-      {/* 拖拽手柄 (常驻展示) */}
-      <div
-        {...attributes}
-        {...listeners}
-        className="flex items-center justify-center opacity-40 hover:!opacity-100 group-hover:opacity-75 transition-opacity cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-200 -ml-1 shrink-0 touch-none"
-        title="拖动排序"
-      >
-        <GripVertical className="w-3.5 h-3.5" />
-      </div>
-
-      {/* 质感图标底座 */}
-      <div className="shrink-0 relative">
-        <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center overflow-hidden border p-1 shadow-inner transition-transform duration-300 group-hover:scale-105 ${
-          card.cover && !imgError
-            ? 'bg-slate-900/50 border-white/10'
-            : `bg-gradient-to-br ${getGradientFromTitle(card.title)}`
-        }`}>
-          {card.cover && !imgError ? (
-            <img
-              src={card.cover}
-              alt={card.title}
-              className="w-full h-full object-contain rounded-md"
-              onError={() => setImgError(true)}
-              loading="lazy"
-            />
-          ) : (
-            <span className="text-base font-bold font-mono tracking-wider">
-              {getInitial(card.title)}
-            </span>
-          )}
-        </div>
-
-        {/* 局域网活动微光指示点 */}
-        {card.lanLink && (
-          <span
-            className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${
-              isLan ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50' : 'bg-slate-500'
-            }`}
-            title={isLan ? 'LAN 局域网可用' : '局域网链接已配置'}
-          />
-        )}
-      </div>
-
-      {/* 标题、描述与状态 */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <h4 className="text-sm font-semibold transition-colors truncate text-slate-100 group-hover:text-sky-300">
-            {card.title}
-          </h4>
-          {card.openInNewWindow && (
-            <ExternalLink className="w-3 h-3 text-slate-500 shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" />
-          )}
-        </div>
-        {card.description ? (
-          <p className="text-xs text-slate-400 truncate mt-0.5 font-normal">
-            {card.description}
-          </p>
-        ) : (
-          <p className="text-[11px] text-slate-500 truncate mt-0.5 font-mono">
-            {primaryLink.replace(/^https?:\/\//, '').split('/')[0]}
-          </p>
-        )}
-      </div>
-
-      {/* 操作按钮区 */}
-      <div className="shrink-0 flex items-center gap-1">
-        {/* 编辑 / 删除按钮 (Hover 时浮现) */}
-        <div className="hidden group-hover:flex items-center gap-0.5 mr-1 animate-in fade-in duration-100">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(card);
-            }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-sky-300 hover:bg-white/10 transition"
-            title="编辑卡片"
-          >
-            <Edit2 className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(card.id);
-            }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
-            title="删除卡片"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* LAN 内网直达微胶囊 */}
-        {card.lanLink && (
+      {/* 悬浮微型快捷操作工具栏 (编辑 / 删除 / 新标签打开) */}
+      <div className="absolute -top-3 right-0 sm:right-1 z-20 hidden group-hover:flex items-center gap-1 bg-black/85 backdrop-blur-xl border border-white/20 rounded-lg p-1 shadow-2xl animate-in fade-in duration-150">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(card);
+          }}
+          className="p-1 rounded-md text-slate-300 hover:text-sky-300 hover:bg-white/10 transition"
+          title="编辑应用"
+        >
+          <Edit2 className="w-3 h-3" />
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(card.id);
+          }}
+          className="p-1 rounded-md text-slate-300 hover:text-rose-400 hover:bg-rose-500/10 transition"
+          title="删除应用"
+        >
+          <Trash2 className="w-3 h-3" />
+        </button>
+        {card.lanLink && card.wanLink && (
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               window.open(card.lanLink, card.openInNewWindow ? '_blank' : '_self');
             }}
-            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
-              isLan
-                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
-                : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
-            }`}
+            className="p-1 rounded-md text-slate-300 hover:text-emerald-400 hover:bg-emerald-500/10 transition text-[9px] font-mono"
             title={`内网直达: ${card.lanLink}`}
           >
-            <Wifi className="w-2.5 h-2.5 text-emerald-400" />
-            <span>LAN</span>
+            LAN
           </button>
+        )}
+      </div>
+
+      {/* Sun-Panel 经典大圆角 Squircle 图标主体 */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="sun-panel-icon w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden flex items-center justify-center relative bg-[#2a2a2a6b] border border-white/15 backdrop-blur-md touch-none"
+      >
+        {card.cover && !imgError ? (
+          <div className="w-full h-full p-2.5 flex items-center justify-center">
+            <img
+              src={card.cover}
+              alt={card.title}
+              className="w-full h-full object-contain drop-shadow"
+              onError={() => setImgError(true)}
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-br ${getGradientFromTitle(card.title)} flex items-center justify-center`}>
+            <span className="text-xl sm:text-2xl font-bold font-mono tracking-wider text-white drop-shadow-md">
+              {getInitial(card.title)}
+            </span>
+          </div>
         )}
 
-        {/* WAN 外网直达微胶囊 */}
-        {card.wanLink && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(card.wanLink, card.openInNewWindow ? '_blank' : '_self');
-            }}
-            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium border transition-all shrink-0 ${
-              !isLan && !card.lanLink
-                ? 'bg-sky-500/15 text-sky-300 border-sky-500/30 hover:bg-sky-500/25'
-                : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-slate-200'
-            }`}
-            title={`外网直达: ${card.wanLink}`}
+        {/* 状态徽标小光点 (Sun-Panel 右上角网络感知角标) */}
+        {card.lanLink && (
+          <span
+            className="absolute top-1.5 right-1.5 flex h-2 w-2"
+            title={isLan ? '当前局域网可用 (LAN)' : '已配置局域网直连'}
           >
-            <Globe className="w-2.5 h-2.5 text-sky-400" />
-            <span>WAN</span>
-          </button>
+            {isLan && (
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            )}
+            <span className={`relative inline-flex rounded-full h-2 w-2 border border-black/40 ${isLan ? 'bg-emerald-400' : 'bg-emerald-600/70'}`} />
+          </span>
         )}
+        {!card.lanLink && card.wanLink && (
+          <span
+            className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-sky-400/80 border border-black/40"
+            title="公网访问 (WAN)"
+          />
+        )}
+      </div>
+
+      {/* 图标下方单行居中文本 (Sun-Panel 经典 app-icon-text-shadow 阴影) */}
+      <div className="w-full text-center mt-2 px-0.5">
+        <span className="text-xs sm:text-[13px] font-medium text-white truncate block app-icon-text-shadow tracking-tight select-none">
+          {card.title}
+        </span>
       </div>
     </div>
   );
 };
+

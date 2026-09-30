@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Globe, ChevronRight } from 'lucide-react';
 import { NetworkContext, Category } from '../types';
 
 interface Props {
@@ -20,126 +20,99 @@ export const HeroSection: React.FC<Props> = ({
   onSelectCategory,
 }) => {
   const [timeStr, setTimeStr] = useState('');
-  const [greeting, setGreeting] = useState('');
+  const [dateStr, setDateStr] = useState('');
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const hours = now.getHours();
+      const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      setTimeStr(`${hours}:${minutes}`);
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      setTimeStr(`${hours}:${minutes}:${seconds}`);
 
-      if (hours >= 5 && hours < 12) setGreeting('早上好');
-      else if (hours >= 12 && hours < 18) setGreeting('下午好');
-      else if (hours >= 18 && hours < 23) setGreeting('晚上好');
-      else setGreeting('夜深了');
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const day = now.getDate();
+      const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      const week = weekDays[now.getDay()];
+      setDateStr(`${year}年${month}月${day}日 ${week}`);
     };
 
     updateTime();
-    const timer = setInterval(updateTime, 10000);
+    const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="relative pt-6 pb-4">
-      {/* 顶部状态与问候 */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-slate-100 via-slate-200 to-slate-400 bg-clip-text text-transparent">
-              {greeting}
-            </span>
-            <span className="text-sm font-medium text-slate-400 font-mono">
-              {timeStr}
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
-            <span>已收录</span>
-            <span className="font-semibold font-mono text-sky-300">
-              {categories.length}
-            </span>
-            <span>个分类 ·</span>
-            <span className="font-semibold font-mono text-sky-300">
-              {totalCards}
-            </span>
-            <span>个家庭服务与站点</span>
-          </p>
-        </div>
-
-        {/* 客户端网络感知徽标 */}
-        <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border transition-all bg-slate-900/40 border-white/[0.08] text-slate-300">
-            <span className="relative flex h-2 w-2">
-              <span
-                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  networkContext.networkType === 'lan' ? 'bg-emerald-400' : 'bg-sky-400'
-                }`}
-              />
-              <span
-                className={`relative inline-flex rounded-full h-2 w-2 ${
-                  networkContext.networkType === 'lan' ? 'bg-emerald-500' : 'bg-sky-500'
-                }`}
-              />
-            </span>
-            <span className="text-xs font-medium">
-              {networkContext.networkType === 'lan' ? '局域网直连 (LAN)' : '公网加速 (WAN)'}
-            </span>
-            <span className="text-[10px] opacity-60 font-mono pl-1 border-l border-white/10">
-              {networkContext.clientIP}
-            </span>
-          </div>
-        </div>
+    <div className="relative pt-6 sm:pt-10 pb-6 text-center select-none">
+      {/* Sun-Panel 经典 Logo + 分割线 + 大秒钟 */}
+      <div className="flex items-center justify-center text-white mb-2">
+        <span className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-shadow">
+          Home
+        </span>
+        <span className="text-2xl sm:text-4xl lg:text-5xl mx-3 sm:mx-4 opacity-40 font-light text-shadow">
+          |
+        </span>
+        <span className="text-3xl sm:text-5xl lg:text-6xl font-bold font-mono tracking-wider text-shadow">
+          {timeStr || '00:00:00'}
+        </span>
       </div>
 
-      {/* 居中搜索条 (Raycast / Spotlight 风格) */}
-      <div className="max-w-2xl mx-auto mb-8">
-        <button
-          type="button"
+      {/* 日期与服务总览微字 */}
+      <p className="text-xs sm:text-sm font-medium text-white/80 tracking-wide text-shadow flex items-center justify-center gap-2 mb-6">
+        <span>{dateStr}</span>
+        <span className="opacity-40">·</span>
+        <span>已连接 {categories.length} 个分类 / {totalCards} 个站点</span>
+      </p>
+
+      {/* Sun-Panel 经典圆角毛玻璃搜索框 */}
+      <div className="max-w-xl mx-auto px-2 mb-7">
+        <div
           onClick={onOpenSearch}
-          className="w-full group flex items-center justify-between px-4 py-3 rounded-xl backdrop-blur-xl shadow-lg transition-all duration-200 cursor-pointer text-left border bg-slate-900/35 hover:bg-slate-800/55 border-white/10 hover:border-sky-400/30 text-slate-300 shadow-sky-950/10"
+          className="group flex items-center justify-between px-4 py-3 rounded-2xl bg-black/35 hover:bg-black/50 focus-within:bg-black/60 backdrop-blur-xl border border-white/20 hover:border-white/35 transition-all duration-300 shadow-2xl cursor-pointer"
         >
-          <div className="flex items-center gap-3">
-            <Search className="w-4 h-4 transition-transform group-hover:scale-110 text-sky-300" />
-            <span className="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition-colors">
-              搜索服务名称、拼音缩写 (如 <code className="font-mono text-sky-300">jf</code>)、内网地址...
+          <div className="flex items-center gap-3 w-full">
+            <Search className="w-4 h-4 text-white/70 group-hover:text-white transition-colors shrink-0" />
+            <span className="text-xs sm:text-sm text-white/60 group-hover:text-white/90 transition-colors truncate">
+              搜索服务名称、拼音首字母 (如 <code className="font-mono text-cyan-300">jf</code>)...
             </span>
           </div>
-          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-            <kbd className="px-2 py-0.5 text-[11px] font-semibold text-slate-400 bg-white/5 border border-white/10 rounded-md shadow-inner font-mono">
+          <div className="flex items-center gap-1.5 shrink-0 pl-2">
+            <kbd className="px-2 py-0.5 text-[11px] font-semibold text-white/80 bg-white/10 border border-white/15 rounded-md shadow-inner font-mono">
               ⌘ K
             </kbd>
           </div>
-        </button>
+        </div>
       </div>
 
-      {/* 快速分类平滑锚点过滤条 */}
+      {/* Sun-Panel 悬浮分类 Dock 标签条 */}
       {categories.length > 1 && (
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex items-center justify-start sm:justify-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar max-w-5xl mx-auto px-2">
           <button
             type="button"
             onClick={() => onSelectCategory(null)}
-            className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
               activeCategory === null
-                ? 'bg-slate-800/80 text-sky-200 border border-sky-400/30 shadow-sm'
-                : 'bg-slate-900/25 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
+                ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
+                : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
             }`}
           >
-            全部服务 ({totalCards})
+            全部 ({totalCards})
           </button>
           {categories.map((cat) => (
             <button
               key={cat.id}
               type="button"
               onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
                 activeCategory === cat.id
-                  ? 'bg-slate-800/80 text-sky-200 border border-sky-400/30 shadow-sm'
-                  : 'bg-slate-900/25 text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-white/5'
+                  ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
+                  : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
               }`}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: cat.color || '#38BDF8' }}
+                style={{ backgroundColor: cat.color || '#38BDF8', boxShadow: `0 0 8px ${cat.color || '#38BDF8'}` }}
               />
               <span>{cat.title}</span>
               <span className="text-[10px] opacity-60">({cat.cards.length})</span>
@@ -150,3 +123,4 @@ export const HeroSection: React.FC<Props> = ({
     </div>
   );
 };
+
