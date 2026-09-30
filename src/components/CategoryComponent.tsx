@@ -58,7 +58,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <h3 className="text-base sm:text-lg font-bold text-white tracking-wide text-shadow">
             {category.title}
           </h3>
-          <span className="text-[11px] font-semibold text-white/70 bg-black/30 border border-white/10 px-2 py-0.5 rounded-full font-mono text-shadow">
+          <span className="text-[11px] font-semibold text-white/80 glass-btn-secondary px-2 py-0.5 rounded-full font-mono text-shadow">
             {category.cards.length}
           </span>
         </div>
@@ -68,7 +68,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onAddCard(category.id)}
-            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white/90 bg-black/40 hover:bg-black/60 hover:text-white border border-white/15 rounded-lg transition-all shadow-sm"
+            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-white/90 glass-btn-secondary rounded-xl transition-all shadow-sm"
             title="添加新应用"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -77,7 +77,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onEditCategory(category)}
-            className="p-1.5 text-white/70 hover:text-white hover:bg-black/30 rounded-lg transition"
+            className="p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition"
             title="编辑分类"
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -85,7 +85,7 @@ export const CategoryComponent: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => onDeleteCategory(category.id)}
-            className="p-1.5 text-white/70 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+            className="p-1.5 text-white/70 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition"
             title="删除分类"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -112,7 +112,7 @@ export const CategoryComponent: React.FC<Props> = ({
               className="flex flex-col items-center justify-center cursor-pointer group"
               title="添加新服务"
             >
-              <div className="w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-2xl border-2 border-dashed border-white/20 group-hover:border-white/50 flex items-center justify-center text-white/50 group-hover:text-white group-hover:scale-105 transition-all bg-black/20 backdrop-blur-sm">
+              <div className="w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-2xl border-2 border-dashed border-white/20 group-hover:border-white/50 flex items-center justify-center text-white/50 group-hover:text-white group-hover:scale-105 transition-all glass-card-item">
                 <Plus className="w-6 h-6" />
               </div>
               <span className="text-xs text-white/60 group-hover:text-white mt-1.5 text-shadow">

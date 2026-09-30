@@ -93,25 +93,25 @@ export const SearchModal: React.FC<Props> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-100">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/45 backdrop-blur-md animate-in fade-in duration-100">
       <div className="fixed inset-0" onClick={onClose} />
-      <div className="relative w-full max-w-2xl rounded-2xl bg-slate-900/95 border border-white/15 shadow-2xl backdrop-blur-2xl z-10 overflow-hidden flex flex-col max-h-[75vh]">
+      <div className="glass-modal relative w-full max-w-2xl rounded-2xl z-10 overflow-hidden flex flex-col max-h-[75vh]">
         {/* 顶部搜索框 */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10">
-          <Search className="w-5 h-5 text-cyan-400 shrink-0" />
+          <Search className="w-5 h-5 text-sky-400 shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="键入以搜索卡片、网址、分类，支持拼音与首字母 (例如 jf 搜索 Jellyfin)..."
-            className="w-full bg-transparent text-sm text-slate-100 placeholder-slate-400 focus:outline-none"
+            className="w-full bg-transparent text-sm text-white placeholder-white/40 focus:outline-none"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="p-1 rounded-md text-slate-400 hover:text-slate-200"
+              className="p-1 rounded-md text-white/60 hover:text-white"
             >
               <X className="w-4 h-4" />
             </button>
@@ -140,31 +140,31 @@ export const SearchModal: React.FC<Props> = ({
                 }}
                 className={`flex items-center justify-between gap-3 p-3 rounded-xl cursor-pointer transition-all ${
                   isSelected
-                    ? 'bg-cyan-500/20 border border-cyan-400/40 text-slate-100'
-                    : 'hover:bg-white/5 border border-transparent text-slate-300'
+                    ? 'bg-white/15 border border-white/25 text-white backdrop-blur-md'
+                    : 'hover:bg-white/10 border border-transparent text-white/80'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-lg overflow-hidden bg-slate-800 border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-xl overflow-hidden bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
                     {card.cover ? (
-                      <img src={card.cover} alt="" className="w-full h-full object-contain p-1" />
+                      <img src={card.cover} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <span className="font-bold text-xs text-cyan-400">
+                      <span className="font-bold text-xs text-white">
                         {card.title.slice(0, 1).toUpperCase()}
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-slate-100 truncate">
+                      <span className="text-sm font-medium text-white truncate">
                         {card.title}
                       </span>
-                      <span className="text-[10px] text-slate-400 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-md">
+                      <span className="text-[10px] text-white/70 bg-white/10 border border-white/15 px-1.5 py-0.5 rounded-md">
                         {item.categoryTitle}
                       </span>
                     </div>
                     {card.description && (
-                      <p className="text-xs text-slate-400 truncate mt-0.5">{card.description}</p>
+                      <p className="text-xs text-white/60 truncate mt-0.5">{card.description}</p>
                     )}
                   </div>
                 </div>

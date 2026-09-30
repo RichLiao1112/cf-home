@@ -102,7 +102,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-200 bg-white/[0.05] hover:bg-white/[0.10] border border-white/10 hover:border-white/20 rounded-lg transition shadow-sm"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-200 glass-btn-secondary rounded-xl transition"
             >
               <Layers className="w-3.5 h-3.5 text-sky-400" />
               <span>{currentKey}</span>
@@ -115,7 +115,7 @@ export const Navbar: React.FC<Props> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setProfileDropdownOpen(false)}
                 />
-                <div className="absolute left-0 mt-2 w-48 rounded-xl bg-slate-900/95 border border-white/15 shadow-2xl backdrop-blur-2xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                <div className="absolute left-0 mt-2 w-48 rounded-2xl glass-dropdown p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
                   <div className="px-2.5 py-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                     配置空间
                   </div>
@@ -126,9 +126,9 @@ export const Navbar: React.FC<Props> = ({
                         onSwitchKey(key);
                         setProfileDropdownOpen(false);
                       }}
-                      className={`flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg cursor-pointer transition ${
+                      className={`flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl cursor-pointer transition ${
                         key === currentKey
-                          ? 'bg-sky-500/20 text-sky-200 font-semibold'
+                          ? 'bg-sky-500/25 text-sky-200 font-semibold shadow-inner'
                           : 'text-slate-300 hover:bg-white/10'
                       }`}
                     >
@@ -158,7 +158,7 @@ export const Navbar: React.FC<Props> = ({
                       setProfileDropdownOpen(false);
                       onCreateKey();
                     }}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-lg transition font-medium text-sky-300 hover:bg-sky-500/10"
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-xl transition font-medium text-sky-300 hover:bg-sky-500/10"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>新建配置空间</span>
@@ -173,7 +173,7 @@ export const Navbar: React.FC<Props> = ({
         <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Zero Trust 身份认证微章 */}
           {authSession.isZeroTrust && (
-            <div className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs shadow-sm border mr-1 bg-slate-900/40 border-white/10 text-slate-300">
+            <div className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs glass-btn-secondary text-slate-300">
               <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
               <span className="font-mono text-[11px] truncate max-w-[160px]">
                 {authSession.userEmail || 'Zero Trust'}
@@ -185,10 +185,10 @@ export const Navbar: React.FC<Props> = ({
           <button
             type="button"
             onClick={onOpenSearch}
-            className="p-1.5 sm:p-2 rounded-lg text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition flex items-center gap-1.5"
+            className="p-1.5 sm:p-2 rounded-xl text-slate-300 hover:text-white glass-btn-secondary transition flex items-center gap-1.5"
             title="聚光灯拼音搜索 (Cmd+K)"
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-4 h-4 text-sky-300" />
             <span className="text-xs hidden lg:inline text-slate-400 font-mono">⌘K</span>
           </button>
 
@@ -196,10 +196,10 @@ export const Navbar: React.FC<Props> = ({
           <button
             type="button"
             onClick={onAddCategory}
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg font-medium text-xs shadow-md transition-all hover:scale-[1.02] bg-slate-800/70 text-sky-200 border border-sky-400/30 shadow-sky-950/10 hover:bg-slate-700/70"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl font-medium text-xs glass-btn-primary transition-all text-sky-200"
             title="添加新分类"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-3.5 h-3.5 text-cyan-300" />
             <span className="hidden sm:inline">新分类</span>
           </button>
 
@@ -208,7 +208,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={onOpenAppearance}
-              className="p-2 rounded-lg text-slate-300 hover:text-cyan-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              className="p-2 rounded-xl text-slate-300 hover:text-cyan-300 glass-btn-secondary transition"
               title="个性化视觉与透明度"
             >
               <Palette className="w-4 h-4" />
@@ -216,7 +216,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={onOpenSnapshot}
-              className="p-2 rounded-lg text-slate-300 hover:text-cyan-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              className="p-2 rounded-xl text-slate-300 hover:text-cyan-300 glass-btn-secondary transition"
               title="版本快照与历史回滚"
             >
               <Camera className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={onOpenMigration}
-              className="p-2 rounded-lg text-slate-300 hover:text-cyan-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              className="p-2 rounded-xl text-slate-300 hover:text-cyan-300 glass-btn-secondary transition"
               title="数据备份与导入导出"
             >
               <DownloadCloud className="w-4 h-4" />
@@ -232,7 +232,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={onOpenRecycleBin}
-              className="p-2 rounded-lg text-slate-300 hover:text-rose-400 bg-white/5 hover:bg-rose-500/10 border border-white/10 transition"
+              className="p-2 rounded-xl text-slate-300 hover:text-rose-400 glass-btn-secondary hover:bg-rose-500/10 transition"
               title="防误删回收站"
             >
               <Trash className="w-4 h-4" />
@@ -244,7 +244,7 @@ export const Navbar: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-lg text-slate-300 hover:text-cyan-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              className="p-1.5 rounded-xl text-slate-300 hover:text-cyan-300 glass-btn-secondary transition"
               title="更多工具"
             >
               <MoreHorizontal className="w-4 h-4" />
@@ -256,7 +256,7 @@ export const Navbar: React.FC<Props> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setMobileMenuOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-slate-900/95 border border-white/15 shadow-2xl backdrop-blur-2xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                <div className="absolute right-0 mt-2 w-48 rounded-2xl glass-dropdown p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
 
                   <div className="px-2.5 py-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                     工具与管理
@@ -267,7 +267,7 @@ export const Navbar: React.FC<Props> = ({
                       setMobileMenuOpen(false);
                       onOpenAppearance();
                     }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-lg transition text-left"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-xl transition text-left"
                   >
                     <Palette className="w-4 h-4 text-cyan-400" />
                     <span>视觉与壁纸</span>
@@ -278,7 +278,7 @@ export const Navbar: React.FC<Props> = ({
                       setMobileMenuOpen(false);
                       onOpenSnapshot();
                     }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-lg transition text-left"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-xl transition text-left"
                   >
                     <Camera className="w-4 h-4 text-cyan-400" />
                     <span>历史版本快照</span>
@@ -289,7 +289,7 @@ export const Navbar: React.FC<Props> = ({
                       setMobileMenuOpen(false);
                       onOpenMigration();
                     }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-lg transition text-left"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-slate-300 hover:bg-white/10 rounded-xl transition text-left"
                   >
                     <DownloadCloud className="w-4 h-4 text-cyan-400" />
                     <span>备份与迁移</span>
@@ -301,7 +301,7 @@ export const Navbar: React.FC<Props> = ({
                       setMobileMenuOpen(false);
                       onOpenRecycleBin();
                     }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-rose-300 hover:bg-rose-500/10 rounded-lg transition text-left"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 text-xs text-rose-300 hover:bg-rose-500/10 rounded-xl transition text-left"
                   >
                     <Trash className="w-4 h-4 text-rose-400" />
                     <span>回收站</span>
