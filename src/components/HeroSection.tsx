@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Globe, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, ChevronLeft, ChevronRight, LayoutGrid, Rows } from 'lucide-react';
 import { NetworkContext, Category } from '../types';
 
 interface Props {
@@ -21,6 +21,49 @@ export const HeroSection: React.FC<Props> = ({
 }) => {
   const [timeStr, setTimeStr] = useState('');
   const [dateStr, setDateStr] = useState('');
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isWrapMode, setIsWrapMode] = useState<boolean>(() => {
+    return localStorage.getItem('cf_home_dock_wrap') === 'true';
+  });
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 4);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 4);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [categories, isWrapMode]);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const amount = direction === 'left' ? -280 : 280;
+      scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (scrollRef.current && e.deltaY !== 0 && !isWrapMode) {
+      scrollRef.current.scrollLeft += e.deltaY;
+      checkScroll();
+    }
+  };
+
+  const toggleWrapMode = () => {
+    setIsWrapMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('cf_home_dock_wrap', String(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -87,37 +130,88 @@ export const HeroSection: React.FC<Props> = ({
 
       {/* Sun-Panel 悬浮分类 Dock 标签条 */}
       {categories.length > 1 && (
-        <div className="flex items-center justify-start sm:justify-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar max-w-5xl mx-auto px-2">
-          <button
-            type="button"
-            onClick={() => onSelectCategory(null)}
-            className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
-              activeCategory === null
-                ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
-                : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
+        <div className="relative max-w-[1600px] mx-auto px-2 sm:px-6">
+          {/* 左侧平滑滚动按钮 (当有左侧内容可滚动且非平铺模式时显示) */}
+          {!isWrapMode && canScrollLeft && (
+            <div className="absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 z-20 flex items-center pr-3 bg-gradient-to-r from-black/80 via-black/40 to-transparent h-full">
+              <button
+                type="button"
+                onClick={() => handleScroll('left')}
+                className="p-1.5 rounded-full bg-black/70 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-lg transition"
+                title="向左滚动"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* 右侧平滑滚动按钮 (当有右侧内容可滚动且非平铺模式时显示) */}
+          {!isWrapMode && canScrollRight && (
+            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 z-20 flex items-center pl-3 bg-gradient-to-l from-black/80 via-black/40 to-transparent h-full">
+              <button
+                type="button"
+                onClick={() => handleScroll('right')}
+                className="p-1.5 rounded-full bg-black/70 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-lg transition"
+                title="向右滚动"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          <div
+            ref={scrollRef}
+            onScroll={checkScroll}
+            onWheel={handleWheel}
+            className={`w-full no-scrollbar py-1.5 transition-all ${
+              isWrapMode
+                ? 'flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 px-1'
+                : 'overflow-x-auto scroll-smooth'
             }`}
           >
-            全部 ({totalCards})
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
-                activeCategory === cat.id
-                  ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
-                  : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
-              }`}
-            >
-              <span
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: cat.color || '#38BDF8', boxShadow: `0 0 8px ${cat.color || '#38BDF8'}` }}
-              />
-              <span>{cat.title}</span>
-              <span className="text-[10px] opacity-60">({cat.cards.length})</span>
-            </button>
-          ))}
+            <div className={isWrapMode ? 'contents' : 'flex items-center gap-1.5 sm:gap-2 px-4 w-fit min-w-max mx-auto'}>
+              <button
+                type="button"
+                onClick={() => onSelectCategory(null)}
+                className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
+                  activeCategory === null
+                    ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
+                    : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
+                }`}
+              >
+                全部 ({totalCards})
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => onSelectCategory(cat.id === activeCategory ? null : cat.id)}
+                  className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
+                    activeCategory === cat.id
+                      ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
+                      : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
+                  }`}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: cat.color || '#38BDF8', boxShadow: `0 0 8px ${cat.color || '#38BDF8'}` }}
+                  />
+                  <span>{cat.title}</span>
+                  <span className="text-[10px] opacity-60">({cat.cards.length})</span>
+                </button>
+              ))}
+
+              {/* 展开/折叠显示模式切换按钮 */}
+              <button
+                type="button"
+                onClick={toggleWrapMode}
+                className="shrink-0 p-1.5 rounded-xl text-xs text-white/60 hover:text-white bg-black/25 hover:bg-black/45 border border-white/15 transition backdrop-blur-md"
+                title={isWrapMode ? '切换为单行横向滚动' : '切换为多行全部展开'}
+              >
+                {isWrapMode ? <Rows className="w-3.5 h-3.5" /> : <LayoutGrid className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
