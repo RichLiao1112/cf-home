@@ -112,7 +112,7 @@ export const HeroSection: React.FC<Props> = ({
       <div className="max-w-xl mx-auto px-2 mb-7">
         <div
           onClick={onOpenSearch}
-          className="group flex items-center justify-between px-4 py-3 rounded-2xl bg-black/35 hover:bg-black/50 focus-within:bg-black/60 backdrop-blur-xl border border-white/20 hover:border-white/35 transition-all duration-300 shadow-2xl cursor-pointer"
+          className="group flex items-center justify-between px-4 py-3 rounded-2xl bg-white/[0.08] hover:bg-white/[0.14] focus-within:bg-white/[0.18] backdrop-blur-2xl border border-white/20 hover:border-white/35 transition-all duration-300 shadow-2xl cursor-pointer"
         >
           <div className="flex items-center gap-3 w-full">
             <Search className="w-4 h-4 text-white/70 group-hover:text-white transition-colors shrink-0" />
@@ -121,7 +121,7 @@ export const HeroSection: React.FC<Props> = ({
             </span>
           </div>
           <div className="flex items-center gap-1.5 shrink-0 pl-2">
-            <kbd className="px-2 py-0.5 text-[11px] font-semibold text-white/80 bg-white/10 border border-white/15 rounded-md shadow-inner font-mono">
+            <kbd className="px-2 py-0.5 text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-md shadow-inner font-mono">
               ⌘ K
             </kbd>
           </div>
@@ -133,11 +133,11 @@ export const HeroSection: React.FC<Props> = ({
         <div className="relative max-w-[1600px] mx-auto px-2 sm:px-6">
           {/* 左侧平滑滚动按钮 (当有左侧内容可滚动且非平铺模式时显示) */}
           {!isWrapMode && canScrollLeft && (
-            <div className="absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 z-20 flex items-center pr-3 bg-gradient-to-r from-black/80 via-black/40 to-transparent h-full">
+            <div className="absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 z-20 flex items-center pr-3 bg-gradient-to-r from-black/60 via-black/20 to-transparent h-full">
               <button
                 type="button"
                 onClick={() => handleScroll('left')}
-                className="p-1.5 rounded-full bg-black/70 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-lg transition"
+                className="p-1.5 rounded-full glass-btn-secondary text-white shadow-lg transition"
                 title="向左滚动"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -147,11 +147,11 @@ export const HeroSection: React.FC<Props> = ({
 
           {/* 右侧平滑滚动按钮 (当有右侧内容可滚动且非平铺模式时显示) */}
           {!isWrapMode && canScrollRight && (
-            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 z-20 flex items-center pl-3 bg-gradient-to-l from-black/80 via-black/40 to-transparent h-full">
+            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 z-20 flex items-center pl-3 bg-gradient-to-l from-black/60 via-black/20 to-transparent h-full">
               <button
                 type="button"
                 onClick={() => handleScroll('right')}
-                className="p-1.5 rounded-full bg-black/70 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-lg transition"
+                className="p-1.5 rounded-full glass-btn-secondary text-white shadow-lg transition"
                 title="向右滚动"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -176,7 +176,7 @@ export const HeroSection: React.FC<Props> = ({
                 className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
                   activeCategory === null
                     ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
-                    : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
+                    : 'bg-white/[0.08] text-white/80 hover:text-white hover:bg-white/[0.16] border-white/15'
                 }`}
               >
                 全部 ({totalCards})
@@ -189,7 +189,7 @@ export const HeroSection: React.FC<Props> = ({
                   className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all backdrop-blur-md border ${
                     activeCategory === cat.id
                       ? 'bg-white/25 text-white font-semibold border-white/40 shadow-lg scale-105'
-                      : 'bg-black/30 text-white/70 hover:text-white hover:bg-black/50 border-white/10'
+                      : 'bg-white/[0.08] text-white/80 hover:text-white hover:bg-white/[0.16] border-white/15'
                   }`}
                 >
                   <span
@@ -205,7 +205,7 @@ export const HeroSection: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={toggleWrapMode}
-                className="shrink-0 p-1.5 rounded-xl text-xs text-white/60 hover:text-white bg-black/25 hover:bg-black/45 border border-white/15 transition backdrop-blur-md"
+                className="shrink-0 p-1.5 rounded-xl text-xs text-white/70 hover:text-white glass-btn-secondary transition"
                 title={isWrapMode ? '切换为单行横向滚动' : '切换为多行全部展开'}
               >
                 {isWrapMode ? <Rows className="w-3.5 h-3.5" /> : <LayoutGrid className="w-3.5 h-3.5" />}

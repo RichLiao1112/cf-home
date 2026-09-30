@@ -24,7 +24,7 @@ export const RecycleBinModal: React.FC<Props> = ({
   const totalCount = (recycleBin.categories?.length || 0) + (recycleBin.cards?.length || 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/25 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="fixed inset-0" onClick={onClose} />
       <div className="glass-modal relative w-full max-w-xl rounded-2xl p-6 z-10 max-h-[85vh] flex flex-col space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">

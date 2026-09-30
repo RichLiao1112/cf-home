@@ -93,7 +93,7 @@ export const SearchModal: React.FC<Props> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/45 backdrop-blur-md animate-in fade-in duration-100">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/25 backdrop-blur-sm animate-in fade-in duration-100">
       <div className="fixed inset-0" onClick={onClose} />
       <div className="glass-modal relative w-full max-w-2xl rounded-2xl z-10 overflow-hidden flex flex-col max-h-[75vh]">
         {/* 顶部搜索框 */}

@@ -97,12 +97,12 @@ export const CardModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/25 backdrop-blur-sm animate-in fade-in duration-150">
       <div
         className="fixed inset-0"
         onClick={onClose}
       />
-      <div className="glass-modal relative w-full max-w-lg rounded-2xl p-6 z-10 space-y-4">
+      <div className="glass-modal relative w-full max-w-lg rounded-2xl p-6 z-10 space-y-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <h3 className="text-base font-bold text-slate-100">
             {initialCard ? '编辑卡片' : '添加新卡片'}

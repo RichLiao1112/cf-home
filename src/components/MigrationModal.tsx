@@ -77,9 +77,9 @@ export const MigrationModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/25 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="fixed inset-0" onClick={onClose} />
-      <div className="relative w-full max-w-lg rounded-2xl glass-modal p-6 z-10 space-y-4">
+      <div className="relative w-full max-w-lg rounded-2xl glass-modal p-6 z-10 space-y-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <div className="flex items-center gap-2 text-slate-100 font-bold">
             <Download className="w-5 h-5 text-cyan-400" />

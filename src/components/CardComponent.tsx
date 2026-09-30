@@ -50,7 +50,7 @@ export const CardComponent: React.FC<Props> = ({ card, networkContext, onEdit, o
       title={card.description || card.title}
     >
       {/* 悬浮微型快捷操作工具栏 (编辑 / 删除 / 新标签打开) */}
-      <div className="absolute -top-3 right-0 sm:right-1 z-20 hidden group-hover:flex items-center gap-1 bg-black/85 backdrop-blur-xl border border-white/20 rounded-lg p-1 shadow-2xl animate-in fade-in duration-150">
+      <div className="absolute -top-3 right-0 sm:right-1 z-20 hidden group-hover:flex items-center gap-1 glass-dropdown rounded-xl p-1 shadow-2xl animate-in fade-in duration-150">
         <button
           type="button"
           onClick={(e) => {
